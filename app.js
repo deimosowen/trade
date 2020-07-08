@@ -6,6 +6,8 @@ const cors = require("cors");
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const db = require("./models");
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
 const app = express();
 
@@ -27,6 +29,8 @@ db.sequelize.sync().then(() => {
 
 require("./routes/companies.routes")(app);
 require("./routes/routes_stage.routes")(app);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.set('port', process.env.PORT || 3000);
 

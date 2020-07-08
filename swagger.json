@@ -1,0 +1,107 @@
+﻿{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "version": "1.0.0",
+    "title": "Swagger Trade",
+    "contact": {
+      "email": ""
+    }
+  },
+  "tags": [
+    {
+      "name": "reference",
+      "description": "Справочники"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/companies": {
+      "get": {
+        "tags": [
+          "reference"
+        ],
+        "summary": "Получение списка компаний",
+        "description": "Компании",
+        "operationId": "companies",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешная операция",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "73a0b90a-5896-4ecb-b3f8-f85a8b6d6553"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "name company"
+                  },
+                  "locality": {
+                    "type": "string",
+                    "example": "locality"
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "address"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "test@mail.com"
+                  },
+                  "website": {
+                    "type": "string",
+                    "example": "www.test.com"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/routes_stage": {
+      "get": {
+        "tags": [
+          "reference"
+        ],
+        "summary": "Получение списка этапов",
+        "description": "Этапы",
+        "operationId": "routes_stage",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешная операция",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": "1"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Новый этап"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

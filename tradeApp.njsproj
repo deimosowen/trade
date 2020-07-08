@@ -64,6 +64,7 @@
     <Content Include="README.md" />
     <Content Include="routes\routes_stage.routes.js" />
     <Content Include="routes\companies.routes.js" />
+    <Content Include="swagger.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="config\" />

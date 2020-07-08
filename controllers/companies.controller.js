@@ -17,8 +17,8 @@ exports.findAll = (req, res) => {
         res.status(200).send(data.map(item => {
             return {
                 id: item.id,
-                companies_name: item.companies_name,
-                locality_name: item.s_address_locality.locality_name,
+                name: item.companies_name,
+                locality: item.s_address_locality.locality_name,
                 address: item.address,
                 email: item.email,
                 phone_number: item.phone_number,
