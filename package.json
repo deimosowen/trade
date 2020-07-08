@@ -1,21 +1,27 @@
 {
   "name": "trade-app",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
+  "main": "app.js",
   "scripts": {
     "start": "node app"
   },
   "description": "tradeApp",
   "author": {
-    "name": ""
+    "name": "Denis"
   },
+  "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.15.0",
+    "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.0",
+    "cors": "^2.8.5",
     "debug": "^2.2.0",
-    "express": "^4.14.0",
+    "express": "^4.17.1",
     "morgan": "^1.7.0",
     "pug": "^2.0.0-beta6",
-    "serve-favicon": "^2.3.0"
+    "serve-favicon": "^2.3.0",
+    "pg": "^8.2.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.2.4"
   }
 }
