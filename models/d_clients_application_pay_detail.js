@@ -12,12 +12,20 @@ module.exports = function(sequelize, DataTypes) {
     'd_clients_application_pay_id': {
       type: DataTypes.UUIDV4,
       allowNull: false,
-      comment: "Оплата к продукции в заявке"
+      comment: "Оплата к продукции в заявке",
+      references: {
+          'model': 'd_clients_application_pay',
+          'key': 'd_clients_application_pay_id'
+      }
     },
     'd_clients_application_products_id': {
       type: DataTypes.UUIDV4,
       allowNull: false,
-      comment: "Продукции в заявке"
+      comment: "Продукции в заявке",
+      references: {
+          'model': 'd_clients_application_products',
+          'key': 'd_clients_application_products_id'
+      }
     },
     'sum_pay': {
       type: DataTypes.DOUBLE,

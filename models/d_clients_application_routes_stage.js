@@ -12,17 +12,29 @@ module.exports = function(sequelize, DataTypes) {
     'd_clients_application_id': {
       type: DataTypes.UUIDV4,
       allowNull: false,
-      comment: "Заявка"
+      comment: "Заявка",
+      references: {
+          'model': 'd_clients_application',
+          'key': 'd_clients_application_id'
+      }
     },
     's_routes_stage_id': {
       type: DataTypes.INTEGER,
       allowNull: false,
-      comment: "Этап"
+      comment: "Этап",
+      references: {
+          'model': 's_routes_stage',
+          'key': 's_routes_stage_id'
+      }
     },
     'd_user_id': {
       type: DataTypes.UUIDV4,
       allowNull: false,
-      comment: "Пользователь"
+      comment: "Пользователь",
+      references: {
+          'model': 'd_user',
+          'key': 'd_user_id'
+      }
     },
     'user_name': {
       type: DataTypes.STRING,

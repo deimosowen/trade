@@ -12,17 +12,29 @@ module.exports = function(sequelize, DataTypes) {
     'd_representatives_id': {
       type: DataTypes.UUIDV4,
       allowNull: false,
-      comment: "Представитель"
+      comment: "Представитель",
+      references: {
+          'model': 'd_representatives',
+          'key': 'd_representatives_id'
+      }
     },
     'd_clients_id': {
       type: DataTypes.UUIDV4,
       allowNull: false,
-      comment: "Клиент"
+      comment: "Клиент",
+      references: {
+          'model': 'd_clients',
+          'key': 'd_clients_id'
+      }
     },
     's_role_id': {
       type: DataTypes.INTEGER,
       allowNull: false,
-      comment: "Роль"
+      comment: "Роль",
+      references: {
+          'model': 's_role',
+          'key': 's_role_id'
+      }
     },
     'user_name': {
       type: DataTypes.STRING,
