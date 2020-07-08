@@ -4,7 +4,8 @@
   "private": true,
   "main": "app.js",
   "scripts": {
-    "start": "node app"
+    "start": "node app",
+    "update": "git pull origin master && npm install"
   },
   "description": "tradeApp",
   "author": {
