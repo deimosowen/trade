@@ -26,6 +26,7 @@ db.sequelize.sync().then(() => {
 });
 
 require("./routes/companies.routes")(app);
+require("./routes/routes_stage.routes")(app);
 
 app.set('port', process.env.PORT || 3000);
 
