@@ -23,7 +23,7 @@ app.use(cookieParser());
 require("./routes/")(app);
 
 db.sequelize.sync().then(() => {
-    console.log("Drop and re-sync db.");
+    console.log("Sync DB");
 });
 
 app.set('port', process.env.PORT || 3000);

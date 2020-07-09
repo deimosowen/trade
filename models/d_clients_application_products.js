@@ -18,15 +18,6 @@ module.exports = function(sequelize, DataTypes) {
           'key': 'd_clients_application_id'
       }
     },
-    'd_representatives_products_id': {
-      type: DataTypes.UUIDV4,
-      allowNull: false,
-      comment: "Продукция представителя",
-      references: {
-          'model': 'd_representatives_products',
-          'key': 'd_representatives_products_id'
-      }
-    },
     'product_name': {
       type: DataTypes.STRING,
       allowNull: false,

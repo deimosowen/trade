@@ -9,15 +9,6 @@ module.exports = function(sequelize, DataTypes) {
       comment: "Первичный ключ",
       primaryKey: true
     },
-    'd_representatives_id': {
-      type: DataTypes.UUIDV4,
-      allowNull: false,
-      comment: "Представитель",
-      references: {
-          'model': 'd_representatives',
-          'key': 'd_representatives_id'
-      }
-    },
     'd_clients_id': {
       type: DataTypes.UUIDV4,
       allowNull: false,

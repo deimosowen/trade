@@ -31,7 +31,7 @@
   <ItemGroup>
     <Content Include="app.js" />
     <Content Include="config\db.config.js" />
-    <Content Include="controllers\clients.application.controller.js" />
+    <Content Include="controllers\clients.controller.js" />
     <Content Include="controllers\routes_stage.controller.js" />
     <Content Include="controllers\companies.controller.js" />
     <Content Include="models\d_clients.js" />
@@ -62,10 +62,11 @@
     <Content Include="models\s_unit_measure.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="routes\clients.routes.js" />
+    <Content Include="routes\swagger.routes.js" />
     <Content Include="routes\index.js" />
     <Content Include="routes\routes_stage.routes.js" />
     <Content Include="routes\companies.routes.js" />
-    <Content Include="routes\swagger.routes.js" />
     <Content Include="swagger.json" />
   </ItemGroup>
   <ItemGroup>
