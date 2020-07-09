@@ -12,7 +12,11 @@ module.exports = function(sequelize, DataTypes) {
     'd_companies_id': {
       type: DataTypes.UUIDV4,
       allowNull: false,
-      comment: "Компания"
+      comment: "Компания",
+      references: {
+          'model': 'd_companies',
+          'key': 'd_companies_id'
+      }
     },
     'type_name': {
       type: DataTypes.STRING,

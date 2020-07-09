@@ -12,7 +12,11 @@ module.exports = function(sequelize, DataTypes) {
     'd_manufacturers_id': {
       type: DataTypes.UUIDV4,
       allowNull: false,
-      comment: "Производитель"
+      comment: "Производитель",
+      references: {
+          'model': 'd_manufacturers',
+          'key': 'd_manufacturers_id'
+      }
     },
     'product_name': {
       type: DataTypes.STRING,
@@ -22,7 +26,11 @@ module.exports = function(sequelize, DataTypes) {
     's_unit_measure_id': {
       type: DataTypes.INTEGER,
       allowNull: false,
-      comment: "Единица измерения"
+      comment: "Единица измерения",
+      references: {
+          'model': 's_unit_measure',
+          'key': 's_unit_measure_id'
+      }
     }
   }, {
     tableName: 'd_products'

@@ -12,12 +12,20 @@ module.exports = function(sequelize, DataTypes) {
     'd_products_id': {
       type: DataTypes.UUIDV4,
       allowNull: false,
-      comment: "Товар"
+      comment: "Товар",
+      references: {
+          'model': 'd_products',
+          'key': 'd_products_id'
+      }
     },
     'd_companies_id': {
       type: DataTypes.UUIDV4,
       allowNull: false,
-      comment: "Компания"
+      comment: "Компания",
+      references: {
+          'model': 'd_companies',
+          'key': 'd_companies_id'
+      }
     },
     'code': {
       type: DataTypes.STRING,
@@ -27,7 +35,11 @@ module.exports = function(sequelize, DataTypes) {
     'd_companies_products_types_id': {
       type: DataTypes.UUIDV4,
       allowNull: false,
-      comment: "Вид товара"
+      comment: "Вид товара",
+      references: {
+          'model': 'd_companies_products_types',
+          'key': 'd_companies_products_types_id'
+      }
     }
   }, {
     tableName: 'd_companies_products'

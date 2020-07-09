@@ -11,12 +11,20 @@ module.exports = function(sequelize, DataTypes) {
     's_routes_stage_id': {
       type: DataTypes.INTEGER,
       allowNull: false,
-      comment: "Этап"
+      comment: "Этап",
+      references: {
+          'model': 's_routes_stage',
+          'key': 's_routes_stage_id'
+      }
     },
     's_routes_stage_id_next': {
       type: DataTypes.INTEGER,
       allowNull: false,
-      comment: "Следующий этап"
+      comment: "Следующий этап",
+      references: {
+          'model': 's_routes_stage',
+          'key': 's_routes_stage_id_next'
+      }
     }
   }, {
     tableName: 's_routes_stage_next'

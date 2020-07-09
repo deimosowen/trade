@@ -12,7 +12,11 @@ module.exports = function(sequelize, DataTypes) {
     's_address_countries_id': {
       type: DataTypes.UUIDV4,
       allowNull: false,
-      comment: "Страна"
+      comment: "Страна",
+      references: {
+          'model': 's_address_countries',
+          'key': 's_address_countries_id'
+      }
     },
     'region_name': {
       type: DataTypes.STRING,

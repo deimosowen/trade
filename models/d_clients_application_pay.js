@@ -12,7 +12,11 @@ module.exports = function(sequelize, DataTypes) {
     'd_clients_application_id': {
       type: DataTypes.UUIDV4,
       allowNull: false,
-      comment: "Заявка"
+      comment: "Заявка",
+      references: {
+          'model': 'd_clients_application',
+          'key': 'd_clients_application_id'
+      }
     },
     'pay_number': {
       type: DataTypes.STRING,
@@ -28,7 +32,11 @@ module.exports = function(sequelize, DataTypes) {
     'd_user_id': {
       type: DataTypes.UUIDV4,
       allowNull: false,
-      comment: "Пользователь"
+      comment: "Пользователь",
+      references: {
+          'model': 'd_user',
+          'key': 'd_user_id'
+      }
     },
     'user_name': {
       type: DataTypes.STRING,
