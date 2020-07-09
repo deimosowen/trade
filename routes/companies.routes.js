@@ -1,10 +1,6 @@
 module.exports = app => {
-    const companies = require("../controllers/companies.controller.js");
-  
+    const controller = require("../controllers/companies.controller.js");
     var router = require("express").Router();
-  
-    // Retrieve all Tutorials
-    router.get("/", companies.findAll);
-  
+    router.get("/", controller.findAll);
     app.use('/api/companies', router);
-  };
+};

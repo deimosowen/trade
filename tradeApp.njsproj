@@ -62,8 +62,10 @@
     <Content Include="models\s_unit_measure.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="routes\index.js" />
     <Content Include="routes\routes_stage.routes.js" />
     <Content Include="routes\companies.routes.js" />
+    <Content Include="routes\swagger.routes.js" />
     <Content Include="swagger.json" />
   </ItemGroup>
   <ItemGroup>

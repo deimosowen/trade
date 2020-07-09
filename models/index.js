@@ -18,7 +18,6 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 
 const fs = require('fs');
 const path = require('path');
-const basename = path.basename(__filename);
 
 const db = {};
 

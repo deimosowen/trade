@@ -15,22 +15,16 @@ var corsOptions = {
     origin: "http://localhost:3000"
 };
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+require("./routes/")(app);
 
 db.sequelize.sync().then(() => {
     console.log("Drop and re-sync db.");
 });
-
-require("./routes/companies.routes")(app);
-require("./routes/routes_stage.routes")(app);
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.set('port', process.env.PORT || 3000);
 
