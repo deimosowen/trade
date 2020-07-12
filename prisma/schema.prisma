@@ -1,0 +1,337 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:1234567890@192.168.35.89:5432/Trade?schema=public"
+}
+
+model d_clients {
+  address               String
+  client_name           String
+  email                 String
+  id                    String                  @default(dbgenerated()) @id
+  phone_number1         String
+  phone_number2         String?
+  d_clients_application d_clients_application[]
+  d_companies_clients   d_companies_clients[]
+  d_user                d_user[]
+
+  @@index([id], name: "d_clients_idx1")
+}
+
+model d_clients_application {
+  application_date                   DateTime
+  application_number                 String                               @default(dbgenerated())
+  application_time                   DateTime
+  date_execution                     DateTime
+  date_fact_execution                DateTime?
+  d_clients_id                       String
+  id                                 String                               @default(dbgenerated()) @id
+  d_clients                          d_clients                            @relation(fields: [d_clients_id], references: [id])
+  d_clients_application_pay          d_clients_application_pay[]
+  d_clients_application_products     d_clients_application_products[]
+  d_clients_application_routes_stage d_clients_application_routes_stage[]
+
+  @@index([id], name: "d_clients_application_idx1")
+  @@index([d_clients_id], name: "d_clients_application_idx2")
+}
+
+model d_clients_application_pay {
+  d_clients_application_id         String
+  d_user_id                        String
+  id                               String                             @default(dbgenerated()) @id
+  pay_date                         DateTime
+  pay_number                       String                             @default(dbgenerated())
+  user_name                        String
+  d_clients_application            d_clients_application              @relation(fields: [d_clients_application_id], references: [id])
+  d_user                           d_user                             @relation(fields: [d_user_id], references: [id])
+  d_clients_application_pay_detail d_clients_application_pay_detail[]
+
+  @@index([id], name: "d_clients_application_pay_idx1")
+  @@index([d_clients_application_id], name: "d_clients_application_pay_idx2")
+  @@index([d_user_id], name: "d_clients_application_pay_idx3")
+}
+
+model d_clients_application_pay_detail {
+  d_clients_application_pay_id      String
+  d_clients_application_products_id String
+  id                                String                         @default(dbgenerated()) @id
+  sum_pay                           Float
+  d_clients_application_pay         d_clients_application_pay      @relation(fields: [d_clients_application_pay_id], references: [id])
+  d_clients_application_products    d_clients_application_products @relation(fields: [d_clients_application_products_id], references: [id])
+
+  @@index([id], name: "d_clients_application_pay_detail_idx1")
+  @@index([d_clients_application_products_id], name: "d_clients_application_pay_detail_idx2")
+  @@index([d_clients_application_pay_id], name: "d_clients_application_pay_detail_idx3")
+}
+
+model d_clients_application_products {
+  count_product                    Int
+  d_clients_application_id         String
+  d_companies_clients_category_id  String
+  d_companies_products_id          String
+  id                               String                             @default(dbgenerated()) @id
+  price                            Float
+  product_name                     String
+  total                            Float
+  d_clients_application            d_clients_application              @relation(fields: [d_clients_application_id], references: [id])
+  d_companies_clients_category     d_companies_clients_category       @relation(fields: [d_companies_clients_category_id], references: [id])
+  d_companies_products             d_companies_products               @relation(fields: [d_companies_products_id], references: [id])
+  d_clients_application_pay_detail d_clients_application_pay_detail[]
+
+  @@index([id], name: "d_clients_application_products_idx1")
+  @@index([d_clients_application_id], name: "d_clients_application_products_idx2")
+  @@index([d_companies_products_id], name: "d_clients_application_products_idx3")
+  @@index([d_companies_clients_category_id], name: "d_clients_application_products_idx4")
+}
+
+model d_clients_application_routes_stage {
+  count_day_execution      Int
+  date_execution           DateTime?
+  date_fact_execution      DateTime?
+  d_clients_application_id String
+  d_user_id                String
+  id                       String                @default(dbgenerated()) @id
+  s_routes_stage_id        Int
+  stage_date               DateTime              @default(now())
+  stage_time               DateTime              @default(now())
+  time_fact_execution      DateTime?
+  user_name                String
+  d_clients_application    d_clients_application @relation(fields: [d_clients_application_id], references: [id])
+  d_user                   d_user                @relation(fields: [d_user_id], references: [id])
+  s_routes_stage           s_routes_stage        @relation(fields: [s_routes_stage_id], references: [id])
+
+  @@index([id], name: "d_clients_application_routes_stage_idx1")
+  @@index([d_user_id], name: "d_clients_application_routes_stage_idx2")
+  @@index([d_clients_application_id], name: "d_clients_application_routes_stage_idx3")
+  @@index([s_routes_stage_id], name: "d_clients_application_routes_stage_idx4")
+}
+
+model d_companies {
+  address                      String
+  companies_name               String
+  email                        String
+  id                           String                         @default(dbgenerated()) @id
+  inn                          String?
+  ogrn                         String?
+  phone_number1                String
+  phone_number2                String?
+  s_address_localities_id      String
+  website                      String?
+  s_address_localities         s_address_localities           @relation(fields: [s_address_localities_id], references: [id])
+  d_companies_clients          d_companies_clients[]
+  d_companies_clients_category d_companies_clients_category[]
+  d_companies_products         d_companies_products[]
+  d_companies_routes_stage     d_companies_routes_stage[]
+
+  @@index([id], name: "d_companies_idx1")
+  @@index([s_address_localities_id], name: "d_companies_idx2")
+}
+
+model d_companies_clients {
+  date_add                        DateTime                     @default(now())
+  d_clients_id                    String
+  d_companies_clients_category_id String
+  d_companies_id                  String
+  id                              String                       @default(dbgenerated()) @id
+  d_clients                       d_clients                    @relation(fields: [d_clients_id], references: [id])
+  d_companies_clients_category    d_companies_clients_category @relation(fields: [d_companies_clients_category_id], references: [id])
+  d_companies                     d_companies                  @relation(fields: [d_companies_id], references: [id])
+
+  @@index([id], name: "d_companies_clients_idx1")
+  @@index([d_companies_id], name: "d_companies_clients_idx2")
+  @@index([d_companies_clients_category_id], name: "d_companies_clients_idx3")
+  @@index([d_clients_id], name: "d_companies_clients_idx4")
+}
+
+model d_companies_clients_category {
+  category_name                  String
+  d_companies_id                 String
+  id                             String                           @default(dbgenerated()) @id
+  d_companies                    d_companies                      @relation(fields: [d_companies_id], references: [id])
+  d_clients_application_products d_clients_application_products[]
+  d_companies_clients            d_companies_clients[]
+  d_companies_products_price     d_companies_products_price[]
+
+  @@index([id], name: "d_companies_clients_category_idx1")
+  @@index([d_companies_id], name: "d_companies_clients_category_idx2")
+}
+
+model d_companies_products {
+  code                           String
+  d_companies_id                 String
+  d_companies_products_types_id  String
+  d_products_id                  String
+  id                             String                           @default(dbgenerated()) @id
+  d_companies                    d_companies                      @relation(fields: [d_companies_id], references: [id])
+  d_companies_products_types     d_companies_products_types       @relation(fields: [d_companies_products_types_id], references: [id])
+  d_products                     d_products                       @relation(fields: [d_products_id], references: [id])
+  d_clients_application_products d_clients_application_products[]
+  d_companies_products_price     d_companies_products_price[]
+
+  @@index([id], name: "d_companies_products_idx1")
+  @@index([d_companies_id], name: "d_companies_products_idx2")
+  @@index([d_products_id], name: "d_companies_products_idx3")
+}
+
+model d_companies_products_price {
+  date_start                      DateTime
+  date_stop                       DateTime?
+  d_companies_clients_category_id String
+  d_companies_products_id         String
+  id                              String                       @default(dbgenerated()) @id
+  price                           Float
+  d_companies_clients_category    d_companies_clients_category @relation(fields: [d_companies_clients_category_id], references: [id])
+  d_companies_products            d_companies_products         @relation(fields: [d_companies_products_id], references: [id])
+
+  @@index([id], name: "d_companies_products_price_idx1")
+  @@index([d_companies_products_id], name: "d_companies_products_price_idx2")
+  @@index([d_companies_clients_category_id], name: "d_companies_products_price_idx3")
+}
+
+model d_companies_products_types {
+  d_companies_id       String
+  id                   String                 @default(dbgenerated()) @id
+  type_name            String
+  d_manufacturers      d_manufacturers        @relation(fields: [d_companies_id], references: [id])
+  d_companies_products d_companies_products[]
+
+  @@index([id], name: "d_product_types_idx1")
+  @@index([d_companies_id], name: "d_product_types_idx2")
+}
+
+model d_companies_routes_stage {
+  count_day_execution Int
+  d_companies_id      String
+  id                  String      @default(dbgenerated()) @id
+  stage_name          String
+  d_companies         d_companies @relation(fields: [d_companies_id], references: [id])
+
+  @@index([id], name: "d_companies_routes_stage_idx1")
+  @@index([d_companies_id], name: "d_companies_routes_stage_idx2")
+}
+
+model d_manufacturers {
+  address                    String
+  email                      String
+  id                         String                       @default(dbgenerated()) @id
+  manufacturer_name          String
+  phone_number1              String
+  phone_number2              String?
+  d_companies_products_types d_companies_products_types[]
+  d_products                 d_products[]
+
+  @@index([id], name: "d_manufacturers_idx1")
+}
+
+model d_products {
+  d_manufacturers_id   String
+  id                   String                 @default(dbgenerated()) @id
+  product_name         String?
+  s_unit_measure_id    Int
+  d_manufacturers      d_manufacturers        @relation(fields: [d_manufacturers_id], references: [id])
+  s_unit_measure       s_unit_measure         @relation(fields: [s_unit_measure_id], references: [id])
+  d_companies_products d_companies_products[]
+
+  @@index([id], name: "d_products_idx1")
+  @@index([s_unit_measure_id], name: "d_products_idx2")
+  @@index([d_manufacturers_id], name: "d_products_idx3")
+}
+
+model d_user {
+  d_clients_id                       String
+  d_representatives_id               String?
+  email                              String
+  id                                 String                               @default(dbgenerated()) @id
+  job_pos_name                       String
+  phone_number1                      String
+  phone_number2                      String?
+  s_role_id                          Int
+  user_name                          String
+  d_clients                          d_clients                            @relation(fields: [d_clients_id], references: [id])
+  s_role                             s_role                               @relation(fields: [s_role_id], references: [id])
+  d_clients_application_pay          d_clients_application_pay[]
+  d_clients_application_routes_stage d_clients_application_routes_stage[]
+
+  @@index([id], name: "d_user_idx1")
+  @@index([s_role_id], name: "d_user_idx2")
+  @@index([d_representatives_id], name: "d_user_idx3")
+  @@index([d_clients_id], name: "d_user_idx4")
+}
+
+model s_address_countries {
+  country_name      String
+  id                String              @default(dbgenerated()) @id
+  s_address_regions s_address_regions[]
+
+  @@index([id], name: "s_address_countries_idx1")
+}
+
+model s_address_localities {
+  id                   String            @default(dbgenerated()) @id
+  locality_name        String
+  s_address_regions_id String
+  s_address_regions    s_address_regions @relation(fields: [s_address_regions_id], references: [id])
+  d_companies          d_companies[]
+}
+
+model s_address_regions {
+  id                     String                 @default(dbgenerated()) @id
+  region_name            String
+  s_address_countries_id String
+  s_address_countries    s_address_countries    @relation(fields: [s_address_countries_id], references: [id])
+  s_address_localities   s_address_localities[]
+
+  @@index([id], name: "s_address_regions_idx1")
+  @@index([s_address_countries_id], name: "s_address_regions_idx2")
+}
+
+model s_currency {
+  code          String
+  currency_name String
+  id            String @default(dbgenerated()) @id
+
+  @@index([id], name: "s_currency_idx1")
+}
+
+model s_pay_term {
+  id        Int    @id
+  term_name String
+
+  @@index([id], name: "s_pay_term_idx1")
+}
+
+model s_role {
+  id        Int      @id
+  role_name String
+  d_user    d_user[]
+}
+
+model s_routes_stage {
+  id                                 Int                                  @id
+  stage_name                         String
+  d_clients_application_routes_stage d_clients_application_routes_stage[]
+  s_routes_stage_next                s_routes_stage_next[]
+
+  @@index([id], name: "s_routes_stage_idx1")
+}
+
+model s_routes_stage_next {
+  id                     Int            @id
+  s_routes_stage_id      Int
+  s_routes_stage_id_next Int
+  s_routes_stage         s_routes_stage @relation(fields: [s_routes_stage_id], references: [id])
+
+  @@index([s_routes_stage_id], name: "s_routes_stage_next_idx2")
+  @@index([s_routes_stage_id_next], name: "s_routes_stage_next_idx3")
+}
+
+model s_unit_measure {
+  id         Int          @id
+  unit_name  String
+  d_products d_products[]
+
+  @@index([id], name: "s_unit_measure_idx1")
+}

@@ -10,6 +10,10 @@
   },
   "tags": [
     {
+      "name": "clients",
+      "description": "Клиенты"
+    },
+    {
       "name": "reference",
       "description": "Справочники"
     }
@@ -18,6 +22,115 @@
     "http"
   ],
   "paths": {
+    "/api/clients/application": {
+      "get": {
+        "tags": [
+          "clients"
+        ],
+        "summary": "Получение списка заявок",
+        "description": "Заявки",
+        "operationId": "clients_application",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "ID компании",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "stage_id",
+            "in": "query",
+            "description": "ID этапа",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешная операция",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "73a0b90a-5896-4ecb-b3f8-f85a8b6d6553"
+                  },
+                  "number": {
+                    "type": "string",
+                    "example": "name company"
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "locality"
+                  },
+                  "time": {
+                    "type": "string",
+                    "example": "address"
+                  },
+                  "client": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "address"
+                      },
+                      "address": {
+                        "type": "string",
+                        "example": "address"
+                      }
+                    }
+                  },
+                  "total": {
+                    "type": "string",
+                    "example": "test@mail.com"
+                  },
+                  "paid": {
+                    "type": "string",
+                    "example": "www.test.com"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка параметров",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "msg": {
+                    "type": "string",
+                    "example": "company_id is required"
+                  },
+                  "param": {
+                    "type": "string",
+                    "example": "company_id"
+                  },
+                  "location": {
+                    "type": "string",
+                    "example": "query"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/companies": {
       "get": {
         "tags": [

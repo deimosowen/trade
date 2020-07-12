@@ -34,32 +34,7 @@
     <Content Include="controllers\clients.controller.js" />
     <Content Include="controllers\routes_stage.controller.js" />
     <Content Include="controllers\companies.controller.js" />
-    <Content Include="models\d_clients.js" />
-    <Content Include="models\d_clients_application.js" />
-    <Content Include="models\d_clients_application_pay.js" />
-    <Content Include="models\d_clients_application_pay_detail.js" />
-    <Content Include="models\d_clients_application_products.js" />
-    <Content Include="models\d_clients_application_routes_stage.js" />
-    <Content Include="models\d_companies.js" />
-    <Content Include="models\d_companies_clients.js" />
-    <Content Include="models\d_companies_clients_category.js" />
-    <Content Include="models\d_companies_products.js" />
-    <Content Include="models\d_companies_products_price.js" />
-    <Content Include="models\d_companies_products_types.js" />
-    <Content Include="models\d_companies_routes_stage.js" />
-    <Content Include="models\d_manufacturers.js" />
-    <Content Include="models\d_products.js" />
-    <Content Include="models\d_user.js" />
-    <Content Include="models\index.js" />
-    <Content Include="models\s_address_countries.js" />
-    <Content Include="models\s_address_localities.js" />
-    <Content Include="models\s_address_regions.js" />
-    <Content Include="models\s_currency.js" />
-    <Content Include="models\s_pay_term.js" />
-    <Content Include="models\s_role.js" />
-    <Content Include="models\s_routes_stage.js" />
-    <Content Include="models\s_routes_stage_next.js" />
-    <Content Include="models\s_unit_measure.js" />
+    <Content Include="prisma\index.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="routes\clients.routes.js" />
@@ -72,7 +47,7 @@
   <ItemGroup>
     <Folder Include="config\" />
     <Folder Include="controllers\" />
-    <Folder Include="models\" />
+    <Folder Include="prisma\" />
     <Folder Include="routes\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
