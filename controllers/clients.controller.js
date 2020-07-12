@@ -5,10 +5,6 @@ exports.findClientsApplicationAll = (req, res) => {
     const companyId = req.query.company_id,
         stageId = req.query.stage_id,
         errors = validationResult(req);
-        console.log(req.query);
-        console.log(companyId);
-        console.log(stageId);
-        console.log(errors.array());
     if (!errors.isEmpty())
         return res.status(422).json({ errors: errors.array() });
 
@@ -62,7 +58,6 @@ exports.findClientsApplicationAll = (req, res) => {
             },
         }
     }).then(data => {
-        //res.status(200).send(data);
         res.status(200).send(data.map(item => {
             return {
                 id: item.id,
