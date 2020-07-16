@@ -8,7 +8,7 @@ exports.findAll = (req, res) => {
                 name: item.companies_name,
                 address: item.address,
                 email: item.email,
-                phone_number: item.phone_number,
+                phone: item.phone_number1,
                 website: item.website
             };
         }));

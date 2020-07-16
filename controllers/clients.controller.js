@@ -96,16 +96,16 @@ exports.findClientsApplicationProductsById = (req, res) => {
         where: {
             d_clients_application_id: applicationId
         },
-        include:{
+        include: {
             d_clients_application: true,
             d_clients_application_pay_detail: {
-                select:{
+                select: {
                     sum_pay: true
                 }
             }
         }
     }).then(data => {
-         res.status(200).send(data.map(item => {
+        res.status(200).send(data.map(item => {
             return {
                 id: item.id,
                 name: item.product_name,
@@ -117,7 +117,7 @@ exports.findClientsApplicationProductsById = (req, res) => {
                     return sum + el.sum_pay;
                 }, 0)
             };
-        })); 
+        }));
     }).catch(err => {
         res.status(500).send({
             message:
@@ -136,29 +136,35 @@ exports.findClientsApplicationStagesById = (req, res) => {
         where: {
             d_clients_application_id: applicationId
         },
-        include:{
+        include: {
             s_routes_stage: {
-                select:{
+                select: {
                     stage_name: true
                 }
             },
         }
     }).then(data => {
-         res.status(200).send(data.map(item => {
+        res.status(200).send(data.map(item => {
             return {
                 id: item.id,
-                stage:{
+                stage: {
                     id: item.s_routes_stage_id,
                     name: item.s_routes_stage.stage_name
                 },
-                user:{
+                user: {
                     id: item.d_user_id,
                     name: item.user_name
                 },
                 date: item.stage_date.toLocaleDateString(),
                 time: item.stage_time.toLocaleTimeString(),
             };
-        }).sort((a,b) => new Date(`${b.date} ${b.time}`) - new Date(`${a.date} ${a.time}`))); 
+        }).sort(function (a, b) {
+            if (`${a.date + a.time}` < `${b.date + b.time}`)
+                return 1;
+            if (`${a.date + a.time}` > `${b.date + b.time}`)
+                return -1;
+            return 0;
+        }));
     }).catch(err => {
         res.status(500).send({
             message:
