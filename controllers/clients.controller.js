@@ -85,3 +85,43 @@ exports.findClientsApplicationAll = (req, res) => {
         });
     });
 };
+
+exports.findClientsApplicationProductsById = (req, res) => {
+    const applicationId = req.query.application_id,
+        errors = validationResult(req);
+    if (!errors.isEmpty())
+        return res.status(422).json({ errors: errors.array() });
+
+    context.d_clients_application_products.findMany({
+        where: {
+            d_clients_application_id: applicationId
+        },
+        include:{
+            d_clients_application: true,
+            d_clients_application_pay_detail: {
+                select:{
+                    sum_pay: true
+                }
+            }
+        }
+    }).then(data => {
+         res.status(200).send(data.map(item => {
+            return {
+                id: item.id,
+                name: item.product_name,
+                date: item.d_clients_application.application_date.toDateString(),
+                time: item.d_clients_application.application_time.toTimeString(),
+                count: item.count_product,
+                price: item.price,
+                paid: item.d_clients_application_pay_detail.reduce(function (sum, el) {
+                    return sum + el.sum_pay;
+                }, 0)
+            };
+        })); 
+    }).catch(err => {
+        res.status(500).send({
+            message:
+                err.message || "Error"
+        });
+    });
+};

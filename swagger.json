@@ -66,36 +66,40 @@
                   },
                   "number": {
                     "type": "string",
-                    "example": "name company"
+                    "example": "00001"
                   },
                   "date": {
                     "type": "string",
-                    "example": "locality"
+                    "example": "Thu Jul 09 2020"
                   },
                   "time": {
                     "type": "string",
-                    "example": "address"
+                    "example": "18:24:49 GMT+0300 (Москва, стандартное время)"
                   },
                   "client": {
                     "type": "object",
                     "properties": {
                       "name": {
+                        "description": "Наименование",
                         "type": "string",
-                        "example": "address"
+                        "example": "Name"
                       },
                       "address": {
+                        "description": "Адрес",
                         "type": "string",
                         "example": "address"
                       }
                     }
                   },
                   "total": {
+                    "description": "Сумма",
                     "type": "string",
-                    "example": "test@mail.com"
+                    "example": "600"
                   },
                   "paid": {
+                    "description": "Оплачено",
                     "type": "string",
-                    "example": "www.test.com"
+                    "example": "400"
                   }
                 }
               }
@@ -131,6 +135,102 @@
         }
       }
     },
+    "/api/clients/application/products": {
+      "get": {
+        "tags": [
+          "clients"
+        ],
+        "summary": "Получение списка товаров по заявке",
+        "description": "Заявки",
+        "operationId": "clients_application_products",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "query",
+            "description": "ID заявки",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешная операция",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "73a0b90a-5896-4ecb-b3f8-f85a8b6d6553"
+                  },
+                  "name": {
+                    "description": "Наименование продукта",
+                    "type": "string",
+                    "example": "product"
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "Thu Jul 09 2020"
+                  },
+                  "time": {
+                    "type": "string",
+                    "example": "18:24:49 GMT+0300 (Москва, стандартное время)"
+                  },
+                  "count": {
+                    "description": "Количество",
+                    "type": "integer",
+                    "example": 2
+                  },
+                  "price": {
+                    "description": "Цена",
+                    "type": "integer",
+                    "example": 100
+                  },
+                  "paid": {
+                    "description": "Оплачено",
+                    "type": "integer",
+                    "example": 200
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка параметров",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "msg": {
+                    "type": "string",
+                    "example": "application_id is required"
+                  },
+                  "param": {
+                    "type": "string",
+                    "example": "application_id"
+                  },
+                  "location": {
+                    "type": "string",
+                    "example": "query"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/companies": {
       "get": {
         "tags": [
@@ -151,11 +251,13 @@
                 "type": "object",
                 "properties": {
                   "id": {
+                    "description": "Id компании",
                     "type": "string",
                     "format": "uuid",
                     "example": "73a0b90a-5896-4ecb-b3f8-f85a8b6d6553"
                   },
                   "name": {
+                    "description": "Наименование компании",
                     "type": "string",
                     "example": "name company"
                   },
@@ -164,14 +266,17 @@
                     "example": "locality"
                   },
                   "address": {
+                    "description": "Адресс компании",
                     "type": "string",
                     "example": "address"
                   },
                   "email": {
+                    "description": "Почта компании",
                     "type": "string",
                     "example": "test@mail.com"
                   },
                   "website": {
+                    "description": "Сайт компании",
                     "type": "string",
                     "example": "www.test.com"
                   }
@@ -202,10 +307,12 @@
                 "type": "object",
                 "properties": {
                   "id": {
+                    "description": "Id этапа",
                     "type": "integer",
                     "example": "1"
                   },
                   "name": {
+                    "description": "Наименование этапа",
                     "type": "string",
                     "example": "Новый этап"
                   }
