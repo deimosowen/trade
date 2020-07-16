@@ -1,6 +1,6 @@
 module.exports = app => {
     const controller = require("../controllers/clients.controller.js");
-    const { query } = require('express-validator');
+    const { query, body } = require('express-validator');
     var router = require("express").Router();
 
     router.get("/applications", [
@@ -23,6 +23,18 @@ module.exports = app => {
             .notEmpty().withMessage('application_id is required')
             .isUUID()
     ], controller.findClientsApplicationStagesById);
+
+    router.post("/applications/stages", [
+        body('application_id')
+            .notEmpty().withMessage('application_id is required')
+            .isUUID(),
+        body('user_id')
+            .notEmpty().withMessage('user_id is required')
+            .isUUID(),
+        body('stage_id')
+            .notEmpty().withMessage('stage_id is required')
+            .isInt()
+    ], controller.createClientsApplicationStages);
 
     app.use('/api/clients', router);
 };

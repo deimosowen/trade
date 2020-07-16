@@ -159,12 +159,50 @@ exports.findClientsApplicationStagesById = (req, res) => {
                 time: item.stage_time.toLocaleTimeString(),
             };
         }).sort(function (a, b) {
-            if (`${a.date + a.time}` < `${b.date + b.time}`)
-                return 1;
-            if (`${a.date + a.time}` > `${b.date + b.time}`)
-                return -1;
+            if (`${a.date + a.time}` < `${b.date + b.time}`) return 1;
+            if (`${a.date + a.time}` > `${b.date + b.time}`) return -1;
             return 0;
         }));
+    }).catch(err => {
+        res.status(500).send({
+            message:
+                err.message || "Error"
+        });
+    });
+};
+
+exports.createClientsApplicationStages = (req, res) => {
+    const applicationId = req.body.application_id,
+        userId = req.body.user_id,
+        stageId = req.body.stage_id,
+        errors = validationResult(req);
+    if (!errors.isEmpty())
+        return res.status(422).json({ errors: errors.array() });
+
+    context.d_clients_application_routes_stage.create({
+        data: {
+            d_clients_application: {
+                connect: {
+                    id: applicationId
+                }
+            },
+            d_user: {
+                connect: {
+                    id: userId
+                }
+            },
+            s_routes_stage: {
+                connect: {
+                    id: parseInt(stageId)
+                }
+            },
+            user_name: '',
+            count_day_execution: 0,
+            stage_date: new Date(),
+            stage_time: new Date()
+        }
+    }).then(data => {
+        res.status(200).send("Запись добавлена");
     }).catch(err => {
         res.status(500).send({
             message:
