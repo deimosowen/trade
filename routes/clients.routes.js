@@ -3,7 +3,7 @@ module.exports = app => {
     const { query } = require('express-validator');
     var router = require("express").Router();
 
-    router.get("/application", [
+    router.get("/applications", [
         query('company_id')
             .notEmpty().withMessage('company_id is required')
             .isUUID(),
@@ -12,11 +12,17 @@ module.exports = app => {
             .isInt()
     ], controller.findClientsApplicationAll);
 
-    router.get("/application/products", [
+    router.get("/applications/products", [
         query('application_id')
             .notEmpty().withMessage('application_id is required')
             .isUUID()
     ], controller.findClientsApplicationProductsById);
+
+    router.get("/applications/stages", [
+        query('application_id')
+            .notEmpty().withMessage('application_id is required')
+            .isUUID()
+    ], controller.findClientsApplicationStagesById);
 
     app.use('/api/clients', router);
 };

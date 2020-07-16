@@ -22,7 +22,7 @@
     "http"
   ],
   "paths": {
-    "/api/clients/application": {
+    "/api/clients/applications": {
       "get": {
         "tags": [
           "clients"
@@ -135,7 +135,7 @@
         }
       }
     },
-    "/api/clients/application/products": {
+    "/api/clients/applications/products": {
       "get": {
         "tags": [
           "clients"
@@ -176,11 +176,11 @@
                   },
                   "date": {
                     "type": "string",
-                    "example": "Thu Jul 09 2020"
+                    "example": "16.07.2020"
                   },
                   "time": {
                     "type": "string",
-                    "example": "18:24:49 GMT+0300 (Москва, стандартное время)"
+                    "example": "18:24:49"
                   },
                   "count": {
                     "description": "Количество",
@@ -196,6 +196,113 @@
                     "description": "Оплачено",
                     "type": "integer",
                     "example": 200
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка параметров",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "msg": {
+                    "type": "string",
+                    "example": "application_id is required"
+                  },
+                  "param": {
+                    "type": "string",
+                    "example": "application_id"
+                  },
+                  "location": {
+                    "type": "string",
+                    "example": "query"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/clients/applications/stages": {
+      "get": {
+        "tags": [
+          "clients"
+        ],
+        "summary": "Получение списка этапов по заявке",
+        "description": "Заявки",
+        "operationId": "clients_application_stages",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "query",
+            "description": "ID заявки",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешная операция",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "73a0b90a-5896-4ecb-b3f8-f85a8b6d6553"
+                  },
+                  "stage": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "Id этапа",
+                        "type": "string",
+                        "example": "1"
+                      },
+                      "name": {
+                        "description": "Наименование этапа",
+                        "type": "string",
+                        "example": "Новый этап"
+                      }
+                    }
+                  },
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "Id сотрудника",
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "73a0b90a-5896-4ecb-b3f8-f85a8b6d6553"
+                      },
+                      "name": {
+                        "description": "Наименование сотрудника",
+                        "type": "string",
+                        "example": "Name"
+                      }
+                    }
+                  },
+                  "date": {
+                    "type": "string",
+                    "example": "16.07.2020"
+                  },
+                  "time": {
+                    "type": "string",
+                    "example": "18:24:49"
                   }
                 }
               }
