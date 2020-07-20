@@ -243,9 +243,10 @@ model d_products {
 model d_user {
   d_clients_id                       String
   d_representatives_id               String?
-  email                              String
+  email                              String                               @unique
   id                                 String                               @default(dbgenerated()) @id
   job_pos_name                       String
+  password                           String
   phone_number1                      String
   phone_number2                      String?
   s_role_id                          Int

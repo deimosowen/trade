@@ -202,9 +202,9 @@ exports.createClientsApplicationStages = (req, res) => {
             stage_time: new Date()
         }
     }).then(data => {
-        res.status(200).send("Запись добавлена");
+        return res.status(200).send("Запись добавлена");
     }).catch(err => {
-        res.status(500).send({
+        return res.status(500).send({
             message:
                 err.message || "Error"
         });

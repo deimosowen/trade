@@ -2,7 +2,7 @@ const context = require('../prisma');
 
 exports.findAll = (req, res) => {
     context.d_companies.findMany().then(data => {
-        res.status(200).send(data.map(item => {
+        return res.status(200).send(data.map(item => {
             return {
                 id: item.id,
                 name: item.companies_name,
@@ -13,7 +13,7 @@ exports.findAll = (req, res) => {
             };
         }));
     }).catch(err => {
-        res.status(500).send({
+        return res.status(500).send({
             message:
                 err.message || "Error"
         });

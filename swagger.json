@@ -2,13 +2,17 @@
   "swagger": "2.0",
   "info": {
     "description": "",
-    "version": "1.0.6",
+    "version": "1.0.9",
     "title": "Swagger Trade",
     "contact": {
       "email": ""
     }
   },
   "tags": [
+    {
+      "name": "auth",
+      "description": "Авторизация"
+    },
     {
       "name": "clients",
       "description": "Клиенты"
@@ -22,6 +26,83 @@
     "http"
   ],
   "paths": {
+    "/api/auth/token": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Получение токена доступа",
+        "description": "Авторизация",
+        "operationId": "token",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "Адрес электронной почты",
+            "required": true,
+            "type": "string",
+            "format": "email"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "Пароль",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешная операция",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "example": "token"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверный адрес электронной почты или пароль"
+          },
+          "422": {
+            "description": "Ошибка параметров",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "msg": {
+                    "type": "string",
+                    "example": "company_id is required"
+                  },
+                  "param": {
+                    "type": "string",
+                    "example": "company_id"
+                  },
+                  "location": {
+                    "type": "string",
+                    "example": "query"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/clients/applications": {
       "get": {
         "tags": [
