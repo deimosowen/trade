@@ -5,9 +5,9 @@ const logger = require('morgan');
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const BearerStrategy = require('passport-http-bearer').Strategy;
+const tokenMiddleware = require('./middleware/token.middleware');
 
 const app = express();
 
@@ -21,17 +21,10 @@ app.use(passport.initialize());
 require("./routes/")(app);
 
 passport.use(new BearerStrategy(function (token, done) {
-  jwt.verify(token, '!Q@W#E$R%T^Y&U*I(O)P', function (err, decoded) {
-    if (err) {
-      return done(null, false);
-    }
-    return done(null, {});
-  });
+  tokenMiddleware.verify(token, done);
 }));
 
 app.set('port', process.env.PORT || 3000); // app.get('port')
 app.listen(3000, function () {
-  console.log(
-    'Server ready at: http://localhost:3000 \n',
-  );
+  console.log('Server ready at: http://localhost:3000 \n',);
 });

@@ -1,6 +1,6 @@
 const context = require('../prisma');
 const { validationResult } = require('express-validator');
-const jwt = require('jsonwebtoken');
+const tokenMiddleware = require('../middleware/token.middleware');
 const bcrypt = require('bcrypt');
 
 exports.getToken = async (req, res) => {
@@ -24,12 +24,12 @@ exports.getToken = async (req, res) => {
         return res.status(400).send('incorrect email or password');
 
     return res.status(200).json({
-        token: jwt.sign({
+        token: tokenMiddleware.sign({
             user: {
                 id: user.id,
                 name: user.user_name,
                 role: user.s_role.role_name
             }
-        }, "!Q@W#E$R%T^Y&U*I(O)P", { expiresIn: 3600, subject: 'trade' })
+        })
     });
 };

@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "",
-    "version": "1.0.9",
+    "version": "1.1.2",
     "title": "Swagger Trade",
     "contact": {
       "email": ""
@@ -16,6 +16,10 @@
     {
       "name": "clients",
       "description": "Клиенты"
+    },
+    {
+      "name": "companies",
+      "description": "Компании"
     },
     {
       "name": "reference",
@@ -54,7 +58,8 @@
             "in": "formData",
             "description": "Пароль",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "format": "password"
           }
         ],
         "responses": {
@@ -546,7 +551,7 @@
     "/api/companies": {
       "get": {
         "tags": [
-          "reference"
+          "companies"
         ],
         "summary": "Получение списка компаний",
         "description": "Компании",
@@ -599,7 +604,85 @@
         }
       }
     },
-    "/api/routes_stage": {
+    "/api/companies/products": {
+      "get": {
+        "tags": [
+          "companies"
+        ],
+        "summary": "Получение списка продукции компании",
+        "description": "Продукции компании",
+        "operationId": "products_companies",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "description": "ID компании",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "category_id",
+            "in": "query",
+            "description": "ID категории клиента",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "type_id",
+            "in": "query",
+            "description": "ID вида продукции",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешная операция",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "description": "Id продукции",
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "73a0b90a-5896-4ecb-b3f8-f85a8b6d6553"
+                  },
+                  "name": {
+                    "description": "Наименование продукции",
+                    "type": "string",
+                    "example": "Milk 2% 500 Ml"
+                  },
+                  "code": {
+                    "description": "Код",
+                    "type": "string",
+                    "example": "0006"
+                  },
+                  "unit": {
+                    "description": "Единица измерения",
+                    "type": "string",
+                    "example": "штука"
+                  },
+                  "price": {
+                    "description": "Цена",
+                    "type": "string",
+                    "example": "100"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reference/routes_stage": {
       "get": {
         "tags": [
           "reference"
