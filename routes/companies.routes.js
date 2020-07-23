@@ -3,7 +3,8 @@ module.exports = app => {
     const { checkSchema } = require('express-validator');
     const passport = require('passport');
     var router = require("express").Router();
-    router.get("/", passport.authenticate('bearer', { session: false }), controller.findCompaniesAll);
+    //router.get("/", passport.authenticate('bearer', { session: false }), controller.findCompaniesAll);
+    router.get("/", controller.findCompaniesAll);
     router.get("/products", checkSchema({
         company_id: {
             in: ['params', 'query'],

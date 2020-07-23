@@ -1,0 +1,509 @@
+﻿swagger: '2.0'
+info:
+  description: ''
+  version: '1.1.4'
+  title: Swagger Trade
+tags:
+  - name: auth
+    description: Авторизация
+  - name: clients
+    description: Клиенты
+  - name: companies
+    description: Компании
+  - name: reference
+    description: Справочники
+schemes:
+  - http
+paths:
+  /api/auth/token:
+    post:
+      tags:
+        - auth
+      summary: Получение токена доступа
+      description: Авторизация
+      operationId: token
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: email
+          in: formData
+          description: Адрес электронной почты
+          required: true
+          type: string
+          format: email
+        - name: password
+          in: formData
+          description: Пароль
+          required: true
+          type: string
+          format: password
+      responses:
+        '200':
+          description: Успешная операция
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+                example: token
+        '400':
+          description: Неверный адрес электронной почты или пароль
+        '422':
+          description: Ошибка параметров
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                value:
+                  type: string
+                  example: ''
+                msg:
+                  type: string
+                  example: company_id is required
+                param:
+                  type: string
+                  example: company_id
+                location:
+                  type: string
+                  example: query
+  /api/clients/applications:
+    get:
+      tags:
+        - clients
+      summary: Получение списка заявок
+      description: Заявки
+      operationId: clients_application
+      produces:
+        - application/json
+      parameters:
+        - name: company_id
+          in: query
+          description: ID компании
+          required: true
+          type: string
+          format: uuid
+        - name: stage_id
+          in: query
+          description: ID этапа
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Успешная операция
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  example: 73a0b90a-5896-4ecb-b3f8-f85a8b6d6553
+                number:
+                  type: string
+                  example: '00001'
+                date:
+                  type: string
+                  example: Thu Jul 09 2020
+                time:
+                  type: string
+                  example: '18:24:49 GMT+0300 (Москва, стандартное время)'
+                client:
+                  type: object
+                  properties:
+                    name:
+                      description: Наименование
+                      type: string
+                      example: Name
+                    address:
+                      description: Адрес
+                      type: string
+                      example: address
+                total:
+                  description: Сумма
+                  type: string
+                  example: '600'
+                paid:
+                  description: Оплачено
+                  type: string
+                  example: '400'
+        '422':
+          description: Ошибка параметров
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                value:
+                  type: string
+                  example: ''
+                msg:
+                  type: string
+                  example: company_id is required
+                param:
+                  type: string
+                  example: company_id
+                location:
+                  type: string
+                  example: query
+  /api/clients/applications/products:
+    get:
+      tags:
+        - clients
+      summary: Получение списка товаров по заявке
+      description: Заявки
+      operationId: clients_application_products
+      produces:
+        - application/json
+      parameters:
+        - name: application_id
+          in: query
+          description: ID заявки
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Успешная операция
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  example: 73a0b90a-5896-4ecb-b3f8-f85a8b6d6553
+                name:
+                  description: Наименование продукта
+                  type: string
+                  example: product
+                date:
+                  type: string
+                  example: 16.07.2020
+                time:
+                  type: string
+                  example: '18:24:49'
+                count:
+                  description: Количество
+                  type: integer
+                  example: 2
+                price:
+                  description: Цена
+                  type: integer
+                  example: 100
+                paid:
+                  description: Оплачено
+                  type: integer
+                  example: 200
+        '422':
+          description: Ошибка параметров
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                value:
+                  type: string
+                  example: ''
+                msg:
+                  type: string
+                  example: application_id is required
+                param:
+                  type: string
+                  example: application_id
+                location:
+                  type: string
+                  example: query
+  /api/clients/applications/stages:
+    get:
+      tags:
+        - clients
+      summary: Получение списка этапов по заявке
+      description: Заявки
+      operationId: clients_application_stages
+      produces:
+        - application/json
+      parameters:
+        - name: application_id
+          in: query
+          description: ID заявки
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Успешная операция
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  example: 73a0b90a-5896-4ecb-b3f8-f85a8b6d6553
+                stage:
+                  type: object
+                  properties:
+                    id:
+                      description: Id этапа
+                      type: string
+                      example: '1'
+                    name:
+                      description: Наименование этапа
+                      type: string
+                      example: Новый этап
+                user:
+                  type: object
+                  properties:
+                    id:
+                      description: Id сотрудника
+                      type: string
+                      format: uuid
+                      example: 73a0b90a-5896-4ecb-b3f8-f85a8b6d6553
+                    name:
+                      description: Наименование сотрудника
+                      type: string
+                      example: Name
+                date:
+                  type: string
+                  example: 16.07.2020
+                time:
+                  type: string
+                  example: '18:24:49'
+        '422':
+          description: Ошибка параметров
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                value:
+                  type: string
+                  example: ''
+                msg:
+                  type: string
+                  example: application_id is required
+                param:
+                  type: string
+                  example: application_id
+                location:
+                  type: string
+                  example: query
+    post:
+      tags:
+        - clients
+      summary: Добавление нового этапа по заявке
+      description: Заявки
+      operationId: clients_application_stages_create
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: application_id
+          in: formData
+          description: ID заявки
+          required: true
+          type: string
+          format: uuid
+        - name: stage_id
+          in: formData
+          description: ID этапа
+          required: true
+          type: integer
+          format: int64
+        - name: user_id
+          in: formData
+          description: ID пользователя
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Успешная операция
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  example: 73a0b90a-5896-4ecb-b3f8-f85a8b6d6553
+                stage:
+                  type: object
+                  properties:
+                    id:
+                      description: Id этапа
+                      type: string
+                      example: '1'
+                    name:
+                      description: Наименование этапа
+                      type: string
+                      example: Новый этап
+                user:
+                  type: object
+                  properties:
+                    id:
+                      description: Id сотрудника
+                      type: string
+                      format: uuid
+                      example: 73a0b90a-5896-4ecb-b3f8-f85a8b6d6553
+                    name:
+                      description: Наименование сотрудника
+                      type: string
+                      example: Name
+                date:
+                  type: string
+                  example: 16.07.2020
+                time:
+                  type: string
+                  example: '18:24:49'
+        '422':
+          description: Ошибка параметров
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                value:
+                  type: string
+                  example: ''
+                msg:
+                  type: string
+                  example: application_id is required
+                param:
+                  type: string
+                  example: application_id
+                location:
+                  type: string
+                  example: query
+  /api/companies:
+    get:
+      tags:
+        - companies
+      summary: Получение списка компаний
+      description: Компании
+      operationId: companies
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Успешная операция
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  description: Id компании
+                  type: string
+                  format: uuid
+                  example: 73a0b90a-5896-4ecb-b3f8-f85a8b6d6553
+                name:
+                  description: Наименование компании
+                  type: string
+                  example: name company
+                locality:
+                  type: string
+                  example: locality
+                address:
+                  description: Адресс компании
+                  type: string
+                  example: address
+                email:
+                  description: Почта компании
+                  type: string
+                  example: test@mail.com
+                website:
+                  description: Сайт компании
+                  type: string
+                  example: www.test.com
+  /api/companies/products:
+    get:
+      tags:
+        - companies
+      summary: Получение списка продукции компании
+      description: Продукции компании
+      operationId: products_companies
+      produces:
+        - application/json
+      parameters:
+        - name: company_id
+          in: query
+          description: ID компании
+          required: true
+          type: string
+          format: uuid
+        - name: category_id
+          in: query
+          description: ID категории клиента
+          required: false
+          type: string
+          format: uuid
+        - name: type_id
+          in: query
+          description: ID вида продукции
+          required: false
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Успешная операция
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  description: Id продукции
+                  type: string
+                  format: uuid
+                  example: 73a0b90a-5896-4ecb-b3f8-f85a8b6d6553
+                name:
+                  description: Наименование продукции
+                  type: string
+                  example: Milk 2% 500 Ml
+                code:
+                  description: Код
+                  type: string
+                  example: '0006'
+                unit:
+                  description: Единица измерения
+                  type: string
+                  example: штука
+                price:
+                  description: Цена
+                  type: string
+                  example: '100'
+  /api/reference/routes_stage:
+    get:
+      tags:
+        - reference
+      summary: Получение списка этапов
+      description: Этапы
+      operationId: routes_stage
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Успешная операция
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  description: Id этапа
+                  type: integer
+                  example: '1'
+                name:
+                  description: Наименование этапа
+                  type: string
+                  example: Новый этап

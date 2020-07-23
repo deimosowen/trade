@@ -1,7 +1,7 @@
 'use strict';
 const debug = require('debug');
 const express = require('express');
-const logger = require('morgan');
+const morgan = require('morgan');
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -11,7 +11,7 @@ const tokenMiddleware = require('./middleware/token.middleware');
 
 const app = express();
 
-app.use(logger('dev'));
+app.use(morgan('dev'));
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
