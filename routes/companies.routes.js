@@ -5,6 +5,15 @@ module.exports = app => {
     var router = require("express").Router();
     //router.get("/", passport.authenticate('bearer', { session: false }), controller.findCompaniesAll);
     router.get("/", controller.findCompaniesAll);
+
+    router.get("/products/types", checkSchema({
+        company_id: {
+            in: ['params', 'query'],
+            errorMessage: 'company_id is wrong',
+            isUUID: true,
+        }
+    }), controller.findCompaniesProductsTypesById);
+
     router.get("/products", checkSchema({
         company_id: {
             in: ['params', 'query'],
@@ -23,7 +32,6 @@ module.exports = app => {
             optional: { options: { nullable: true } },
             isUUID: true,
         }
-    }),
-        controller.findCompaniesProductsById);
+    }), controller.findCompaniesProductsById);
     app.use('/api/companies', router);
 };

@@ -21,6 +21,34 @@ exports.findCompaniesAll = (req, res) => {
     });
 };
 
+exports.findCompaniesProductsTypesById = (req, res) => {
+    const companyId = req.query.company_id,
+        errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() });
+
+    context.d_companies_products_types.findMany({
+        where:{
+            d_companies_id: companyId,
+        },
+        select:{
+            id: true,
+            type_name: true,
+        }
+    }).then(data => {
+        return res.status(200).send(data.map(item => {
+            return {
+                id: item.id,
+                name: item.type_name
+            };
+        }));
+    }).catch(err => {
+        return res.status(500).send({
+            message:
+                err.message || "Error"
+        });
+    });
+}; 
+
 exports.findCompaniesProductsById = (req, res) => {
     const companyId = req.query.company_id,
         categoryId = req.query.category_id,

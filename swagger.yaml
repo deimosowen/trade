@@ -1,7 +1,7 @@
 ﻿swagger: '2.0'
 info:
   description: ''
-  version: '1.1.5'
+  version: '1.1.6'
   title: Swagger Trade
 tags:
   - name: auth
@@ -490,6 +490,76 @@ paths:
                   description: Цена
                   type: string
                   example: '100'
+        '422':
+          description: Ошибка параметров
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                value:
+                  type: string
+                  example: ''
+                msg:
+                  type: string
+                  example: company_id is required
+                param:
+                  type: string
+                  example: company_id
+                location:
+                  type: string
+                  example: query
+  /api/companies/products/types:
+    get:
+      tags:
+        - companies
+      summary: Получение списка видов продукции
+      description: Заявки
+      operationId: products_companies_types
+      produces:
+        - application/json
+      parameters:
+        - name: company_id
+          in: query
+          description: ID компании
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Успешная операция
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  example: 73a0b90a-5896-4ecb-b3f8-f85a8b6d6553
+                name:
+                  description: Наименование вида продукции
+                  type: string
+                  example: product
+        '422':
+          description: Ошибка параметров
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                value:
+                  type: string
+                  example: ''
+                msg:
+                  type: string
+                  example: company_id is required
+                param:
+                  type: string
+                  example: company_id
+                location:
+                  type: string
+                  example: query
   /api/reference/routes_stage:
     get:
       tags:
