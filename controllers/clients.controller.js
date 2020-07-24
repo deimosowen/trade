@@ -66,7 +66,9 @@ exports.findClientsApplicationAll = (req, res) => {
                 time: item.application_time.toTimeString(),
                 client: {
                     name: item.d_clients.client_name,
-                    address: item.d_clients.address
+                    address: item.d_clients.address,
+                    email: item.d_clients.email,
+                    phone: item.d_clients.phone_number1,
                 },
                 total: item.d_clients_application_products.reduce(function (sum, el) {
                     return sum + el.total;
