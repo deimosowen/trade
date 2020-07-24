@@ -123,6 +123,14 @@ paths:
                       description: Адрес
                       type: string
                       example: address
+                    email:
+                      description: Электронная почта
+                      type: string
+                      example: test@test.ru
+                    phone:
+                      description: Номер телефона
+                      type: string
+                      example: +79881231213
                 total:
                   description: Сумма
                   type: string
