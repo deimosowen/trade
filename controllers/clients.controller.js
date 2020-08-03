@@ -1,6 +1,29 @@
 const context = require('../prisma');
 const { validationResult } = require('express-validator');
 
+exports.findClientsAll = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+        return res.status(422).json({ errors: errors.array() });
+
+    context.d_clients.findMany().then(data => {
+        res.status(200).send(data.map(item => {
+            return {
+                id: item.id,
+                name: item.client_name,
+                address: item.address,
+                email: item.email,
+                phone: item.phone_number1
+            };
+        }));
+    }).catch(err => {
+        res.status(500).send({
+            message:
+                err.message || "Error"
+        });
+    });
+};
+
 exports.findClientsApplicationAll = (req, res) => {
     const companyId = req.query.company_id,
         stageId = req.query.stage_id,
@@ -199,7 +222,6 @@ exports.createClientsApplicationPay = (req, res) => {
         });
     });
 };
-
 
 exports.findClientsApplicationProductsById = (req, res) => {
     const applicationId = req.query.application_id,

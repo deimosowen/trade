@@ -3,6 +3,8 @@ module.exports = app => {
     const { query, body, checkSchema } = require('express-validator');
     var router = require("express").Router();
 
+    router.get("/", controller.findClientsAll);
+
     router.get("/applications", [
         query('company_id')
             .notEmpty().withMessage('company_id is required')
