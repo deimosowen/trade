@@ -1,6 +1,6 @@
 module.exports = app => {
     const controller = require("../controllers/clients.controller.js");
-    const { query, body } = require('express-validator');
+    const { query, body, checkSchema } = require('express-validator');
     var router = require("express").Router();
 
     router.get("/applications", [
@@ -11,6 +11,27 @@ module.exports = app => {
             .notEmpty().withMessage('stage_id is required')
             .isInt()
     ], controller.findClientsApplicationAll);
+
+    router.post("/applications", checkSchema({
+        client_id: {
+            in: ['body'],
+            errorMessage: 'client_id is wrong',
+            isUUID: true,
+        },
+        products: {
+            custom: {
+                options: (value) => {
+                    return value;
+                }
+            }
+        },
+    }), controller.createClientsApplication);
+
+    router.post("/applications/payments", [
+        body('application_id')
+            .notEmpty().withMessage('application_id is required')
+            .isUUID(),
+    ], controller.createClientsApplicationPay);
 
     router.get("/applications/products", [
         query('application_id')

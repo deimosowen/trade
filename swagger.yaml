@@ -1,7 +1,7 @@
 ﻿swagger: '2.0'
 info:
   description: ''
-  version: '1.1.6'
+  version: '1.1.8'
   title: Swagger Trade
 tags:
   - name: auth
@@ -155,6 +155,73 @@ paths:
                 param:
                   type: string
                   example: company_id
+                location:
+                  type: string
+                  example: query
+    post:
+      tags:
+        - clients
+      summary: Добавление новой заявки
+      description: Заявки
+      operationId: clients_application_create
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: application
+          description: Добавление новой заявки.
+          schema:
+            type: object
+            required:
+              - userName
+            properties:
+              client_id:
+               type: string
+               format: uuid
+               example: 73a0b90a-5896-4ecb-b3f8-f85a8b6d6553
+              products:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: 73a0b90a-5896-4ecb-b3f8-f85a8b6d6553
+                    count:
+                      type: int
+                      example: 20
+      responses:
+        '200':
+          description: Успешная операция
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: e1e9b46b-4f9b-4112-970c-04ae09d54d1a
+              number:
+                type: int
+                example: 40
+        '422':
+          description: Ошибка параметров
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                value:
+                  type: string
+                  example: ''
+                msg:
+                  type: string
+                  example: application_id is required
+                param:
+                  type: string
+                  example: application_id
                 location:
                   type: string
                   example: query

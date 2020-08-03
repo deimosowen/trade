@@ -88,6 +88,119 @@ exports.findClientsApplicationAll = (req, res) => {
     });
 };
 
+exports.createClientsApplication = (req, res) => {
+    console.log(req.body);
+    const clientId = req.body.client_id,
+        products = req.body.products,
+        errors = validationResult(req);
+
+    if (!errors.isEmpty())
+        return res.status(422).json({ errors: errors.array() });
+
+    let curentData = new Date();
+    context.d_clients_application.create({
+        data: {
+            application_date: curentData,
+            application_time: curentData,
+            date_execution: new Date(curentData.setTime(curentData.getTime() + 30 * 86400000)),
+            d_clients: {
+                connect: {
+                    id: clientId
+                }
+            },
+            d_clients_application_products: {
+                create: products.map(function (val) {
+                    return {
+                        count_product: val.count,
+                        d_companies_products: {
+                            connect: {
+                                id: val.id
+                            }
+                        }
+                    }
+                })
+            }
+        }
+    }).then(data => {
+        return res.status(200).send({
+            id: data.id,
+            number: data.application_number
+        });
+    }).catch(err => {
+        return res.status(500).send({
+            message:
+                err.message || "Error"
+        });
+    });
+};
+
+exports.findClientsApplicationPayById = (req, res) => {
+    const applicationId = req.query.application_id,
+        errors = validationResult(req);
+    if (!errors.isEmpty())
+        return res.status(422).json({ errors: errors.array() });
+
+    context.d_clients_application_pay.findMany({
+        where: {
+            d_clients_application_id: applicationId
+        }
+    }).then(data => {
+        res.status(200).send(data.map(item => {
+            return {
+                id: item.id,
+                number: item.pay_number,
+                date: item.pay_date.toLocaleDateString(),
+                sum_pay: item.sum_pay,
+            };
+        }));
+    }).catch(err => {
+        res.status(500).send({
+            message:
+                err.message || "Error"
+        });
+    });
+};
+
+exports.createClientsApplicationPay = (req, res) => {
+    const applicationId = req.body.application_id,
+        userId = req.body.user_id,
+        sumPay = req.body.sum_pay,
+        errors = validationResult(req);
+
+    if (!errors.isEmpty())
+        return res.status(422).json({ errors: errors.array() });
+
+    context.d_clients_application_pay.create({
+        data: {
+            d_clients_application: {
+                connect: {
+                    id: applicationId
+                },
+            },
+            sum_pay: parseInt(sumPay),
+            pay_date: new Date(),
+            d_user: {
+                connect: {
+                    id: userId
+                }
+            },
+        }
+    }).then(data => {
+        return res.status(200).send({
+            id: data.id,
+            number: data.pay_number,
+            date: data.pay_date,
+            sum_pay: data.sum_pay
+        });
+    }).catch(err => {
+        return res.status(500).send({
+            message:
+                err.message || "Error"
+        });
+    });
+};
+
+
 exports.findClientsApplicationProductsById = (req, res) => {
     const applicationId = req.query.application_id,
         errors = validationResult(req);
@@ -211,4 +324,4 @@ exports.createClientsApplicationStages = (req, res) => {
                 err.message || "Error"
         });
     });
-};
+}; 

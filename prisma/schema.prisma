@@ -8,10 +8,10 @@ datasource db {
 }
 
 model d_clients {
-  address               String
-  client_name           String
-  email                 String
   id                    String                  @default(dbgenerated()) @id
+  client_name           String
+  address               String
+  email                 String
   phone_number1         String
   phone_number2         String?
   d_clients_application d_clients_application[]
@@ -22,13 +22,13 @@ model d_clients {
 }
 
 model d_clients_application {
-  application_date                   DateTime
+  id                                 String                               @default(dbgenerated()) @id
+  d_clients_id                       String
   application_number                 String                               @default(dbgenerated())
+  application_date                   DateTime
   application_time                   DateTime
   date_execution                     DateTime
   date_fact_execution                DateTime?
-  d_clients_id                       String
-  id                                 String                               @default(dbgenerated()) @id
   d_clients                          d_clients                            @relation(fields: [d_clients_id], references: [id])
   d_clients_application_pay          d_clients_application_pay[]
   d_clients_application_products     d_clients_application_products[]
@@ -39,12 +39,13 @@ model d_clients_application {
 }
 
 model d_clients_application_pay {
-  d_clients_application_id         String
-  d_user_id                        String
   id                               String                             @default(dbgenerated()) @id
-  pay_date                         DateTime
+  d_clients_application_id         String
   pay_number                       String                             @default(dbgenerated())
-  user_name                        String
+  pay_date                         DateTime
+  d_user_id                        String
+  user_name                        String?
+  sum_pay                          Float
   d_clients_application            d_clients_application              @relation(fields: [d_clients_application_id], references: [id])
   d_user                           d_user                             @relation(fields: [d_user_id], references: [id])
   d_clients_application_pay_detail d_clients_application_pay_detail[]
@@ -55,9 +56,9 @@ model d_clients_application_pay {
 }
 
 model d_clients_application_pay_detail {
+  id                                String                         @default(dbgenerated()) @id
   d_clients_application_pay_id      String
   d_clients_application_products_id String
-  id                                String                         @default(dbgenerated()) @id
   sum_pay                           Float
   d_clients_application_pay         d_clients_application_pay      @relation(fields: [d_clients_application_pay_id], references: [id])
   d_clients_application_products    d_clients_application_products @relation(fields: [d_clients_application_products_id], references: [id])
@@ -68,16 +69,16 @@ model d_clients_application_pay_detail {
 }
 
 model d_clients_application_products {
-  count_product                    Int
-  d_clients_application_id         String
-  d_companies_clients_category_id  String
-  d_companies_products_id          String
   id                               String                             @default(dbgenerated()) @id
-  price                            Float
-  product_name                     String
-  total                            Float
+  d_clients_application_id         String
+  d_companies_products_id          String
+  product_name                     String?
+  d_companies_clients_category_id  String?
+  price                            Float?
+  count_product                    Int
+  total                            Float?
   d_clients_application            d_clients_application              @relation(fields: [d_clients_application_id], references: [id])
-  d_companies_clients_category     d_companies_clients_category       @relation(fields: [d_companies_clients_category_id], references: [id])
+  d_companies_clients_category     d_companies_clients_category?      @relation(fields: [d_companies_clients_category_id], references: [id])
   d_companies_products             d_companies_products               @relation(fields: [d_companies_products_id], references: [id])
   d_clients_application_pay_detail d_clients_application_pay_detail[]
 
@@ -88,17 +89,17 @@ model d_clients_application_products {
 }
 
 model d_clients_application_routes_stage {
-  count_day_execution      Int
-  date_execution           DateTime?
-  date_fact_execution      DateTime?
-  d_clients_application_id String
-  d_user_id                String
   id                       String                @default(dbgenerated()) @id
+  d_clients_application_id String
   s_routes_stage_id        Int
+  d_user_id                String
+  user_name                String
   stage_date               DateTime              @default(now())
   stage_time               DateTime              @default(now())
+  date_execution           DateTime?
+  date_fact_execution      DateTime?
+  count_day_execution      Int
   time_fact_execution      DateTime?
-  user_name                String
   d_clients_application    d_clients_application @relation(fields: [d_clients_application_id], references: [id])
   d_user                   d_user                @relation(fields: [d_user_id], references: [id])
   s_routes_stage           s_routes_stage        @relation(fields: [s_routes_stage_id], references: [id])
@@ -110,20 +111,21 @@ model d_clients_application_routes_stage {
 }
 
 model d_companies {
-  address                      String
-  companies_name               String
-  email                        String
   id                           String                         @default(dbgenerated()) @id
-  inn                          String?
-  ogrn                         String?
+  s_address_localities_id      String
+  companies_name               String
+  address                      String
+  email                        String
   phone_number1                String
   phone_number2                String?
-  s_address_localities_id      String
+  inn                          String?
+  ogrn                         String?
   website                      String?
   s_address_localities         s_address_localities           @relation(fields: [s_address_localities_id], references: [id])
   d_companies_clients          d_companies_clients[]
   d_companies_clients_category d_companies_clients_category[]
   d_companies_products         d_companies_products[]
+  d_companies_products_types   d_companies_products_types[]
   d_companies_routes_stage     d_companies_routes_stage[]
 
   @@index([id], name: "d_companies_idx1")
@@ -131,11 +133,11 @@ model d_companies {
 }
 
 model d_companies_clients {
-  date_add                        DateTime                     @default(now())
-  d_clients_id                    String
-  d_companies_clients_category_id String
-  d_companies_id                  String
   id                              String                       @default(dbgenerated()) @id
+  d_companies_id                  String
+  d_companies_clients_category_id String
+  d_clients_id                    String
+  date_add                        DateTime                     @default(now())
   d_clients                       d_clients                    @relation(fields: [d_clients_id], references: [id])
   d_companies_clients_category    d_companies_clients_category @relation(fields: [d_companies_clients_category_id], references: [id])
   d_companies                     d_companies                  @relation(fields: [d_companies_id], references: [id])
@@ -147,9 +149,9 @@ model d_companies_clients {
 }
 
 model d_companies_clients_category {
-  category_name                  String
-  d_companies_id                 String
   id                             String                           @default(dbgenerated()) @id
+  d_companies_id                 String
+  category_name                  String
   d_companies                    d_companies                      @relation(fields: [d_companies_id], references: [id])
   d_clients_application_products d_clients_application_products[]
   d_companies_clients            d_companies_clients[]
@@ -160,11 +162,11 @@ model d_companies_clients_category {
 }
 
 model d_companies_products {
-  code                           String
-  d_companies_id                 String
-  d_companies_products_types_id  String
-  d_products_id                  String
   id                             String                           @default(dbgenerated()) @id
+  d_products_id                  String
+  d_companies_id                 String
+  code                           String
+  d_companies_products_types_id  String
   d_companies                    d_companies                      @relation(fields: [d_companies_id], references: [id])
   d_companies_products_types     d_companies_products_types       @relation(fields: [d_companies_products_types_id], references: [id])
   d_products                     d_products                       @relation(fields: [d_products_id], references: [id])
@@ -177,12 +179,12 @@ model d_companies_products {
 }
 
 model d_companies_products_price {
+  id                              String                       @default(dbgenerated()) @id
+  d_companies_products_id         String
+  d_companies_clients_category_id String
+  price                           Float
   date_start                      DateTime
   date_stop                       DateTime?
-  d_companies_clients_category_id String
-  d_companies_products_id         String
-  id                              String                       @default(dbgenerated()) @id
-  price                           Float
   d_companies_clients_category    d_companies_clients_category @relation(fields: [d_companies_clients_category_id], references: [id])
   d_companies_products            d_companies_products         @relation(fields: [d_companies_products_id], references: [id])
 
@@ -192,10 +194,10 @@ model d_companies_products_price {
 }
 
 model d_companies_products_types {
-  d_companies_id       String
   id                   String                 @default(dbgenerated()) @id
+  d_companies_id       String
   type_name            String
-  d_manufacturers      d_manufacturers        @relation(fields: [d_companies_id], references: [id])
+  d_companies          d_companies            @relation(fields: [d_companies_id], references: [id])
   d_companies_products d_companies_products[]
 
   @@index([id], name: "d_product_types_idx1")
@@ -203,10 +205,10 @@ model d_companies_products_types {
 }
 
 model d_companies_routes_stage {
-  count_day_execution Int
-  d_companies_id      String
   id                  String      @default(dbgenerated()) @id
+  d_companies_id      String
   stage_name          String
+  count_day_execution Int
   d_companies         d_companies @relation(fields: [d_companies_id], references: [id])
 
   @@index([id], name: "d_companies_routes_stage_idx1")
@@ -214,21 +216,20 @@ model d_companies_routes_stage {
 }
 
 model d_manufacturers {
-  address                    String
-  email                      String
-  id                         String                       @default(dbgenerated()) @id
-  manufacturer_name          String
-  phone_number1              String
-  phone_number2              String?
-  d_companies_products_types d_companies_products_types[]
-  d_products                 d_products[]
+  id                String       @default(dbgenerated()) @id
+  manufacturer_name String
+  address           String
+  email             String
+  phone_number1     String
+  phone_number2     String?
+  d_products        d_products[]
 
   @@index([id], name: "d_manufacturers_idx1")
 }
 
 model d_products {
-  d_manufacturers_id   String
   id                   String                 @default(dbgenerated()) @id
+  d_manufacturers_id   String
   product_name         String?
   s_unit_measure_id    Int
   d_manufacturers      d_manufacturers        @relation(fields: [d_manufacturers_id], references: [id])
@@ -241,16 +242,16 @@ model d_products {
 }
 
 model d_user {
-  d_clients_id                       String
-  d_representatives_id               String?
-  email                              String                               @unique
   id                                 String                               @default(dbgenerated()) @id
-  job_pos_name                       String
-  password                           String
-  phone_number1                      String
-  phone_number2                      String?
+  d_representatives_id               String?
+  d_clients_id                       String
   s_role_id                          Int
   user_name                          String
+  job_pos_name                       String
+  phone_number1                      String
+  phone_number2                      String?
+  email                              String                               @unique
+  password                           String
   d_clients                          d_clients                            @relation(fields: [d_clients_id], references: [id])
   s_role                             s_role                               @relation(fields: [s_role_id], references: [id])
   d_clients_application_pay          d_clients_application_pay[]
@@ -263,8 +264,8 @@ model d_user {
 }
 
 model s_address_countries {
-  country_name      String
   id                String              @default(dbgenerated()) @id
+  country_name      String
   s_address_regions s_address_regions[]
 
   @@index([id], name: "s_address_countries_idx1")
@@ -272,16 +273,16 @@ model s_address_countries {
 
 model s_address_localities {
   id                   String            @default(dbgenerated()) @id
-  locality_name        String
   s_address_regions_id String
+  locality_name        String
   s_address_regions    s_address_regions @relation(fields: [s_address_regions_id], references: [id])
   d_companies          d_companies[]
 }
 
 model s_address_regions {
   id                     String                 @default(dbgenerated()) @id
-  region_name            String
   s_address_countries_id String
+  region_name            String
   s_address_countries    s_address_countries    @relation(fields: [s_address_countries_id], references: [id])
   s_address_localities   s_address_localities[]
 
@@ -290,9 +291,9 @@ model s_address_regions {
 }
 
 model s_currency {
+  id            String @default(dbgenerated()) @id
   code          String
   currency_name String
-  id            String @default(dbgenerated()) @id
 
   @@index([id], name: "s_currency_idx1")
 }
