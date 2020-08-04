@@ -1,4 +1,5 @@
 const context = require('../prisma');
+const moment = require('moment');
 const { validationResult } = require('express-validator');
 
 exports.findClientsAll = (req, res) => {
@@ -172,7 +173,7 @@ exports.findClientsApplicationPayById = (req, res) => {
             return {
                 id: item.id,
                 number: item.pay_number,
-                date: item.pay_date.toLocaleDateString(),
+                date: moment(item.pay_date).format('DD.MM.YYYY'),
                 sum_pay: item.sum_pay,
             };
         }));
@@ -246,8 +247,8 @@ exports.findClientsApplicationProductsById = (req, res) => {
             return {
                 id: item.id,
                 name: item.product_name,
-                date: item.d_clients_application.application_date.toLocaleDateString(),
-                time: item.d_clients_application.application_time.toLocaleTimeString(),
+                date: moment(item.d_clients_application.application_date).format('DD.MM.YYYY'),
+                time: moment(item.d_clients_application.application_date).format('hh:mm:ss'),
                 count: item.count_product,
                 price: item.price,
                 paid: item.d_clients_application_pay_detail.reduce(function (sum, el) {
@@ -279,6 +280,9 @@ exports.findClientsApplicationStagesById = (req, res) => {
                     stage_name: true
                 }
             },
+        },
+        orderBy: {
+            stage_date: "desc"
         }
     }).then(data => {
         res.status(200).send(data.map(item => {
@@ -292,13 +296,9 @@ exports.findClientsApplicationStagesById = (req, res) => {
                     id: item.d_user_id,
                     name: item.user_name
                 },
-                date: item.stage_date.toLocaleDateString(),
-                time: item.stage_time.toLocaleTimeString(),
+                date: moment(item.stage_date).format('DD.MM.YYYY'),
+                time: moment(item.stage_date).format('hh:mm:ss'),
             };
-        }).sort(function (a, b) {
-            if (`${a.date + a.time}` < `${b.date + b.time}`) return 1;
-            if (`${a.date + a.time}` > `${b.date + b.time}`) return -1;
-            return 0;
         }));
     }).catch(err => {
         res.status(500).send({
