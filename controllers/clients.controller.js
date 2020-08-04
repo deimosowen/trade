@@ -35,7 +35,7 @@ exports.findClientsApplicationAll = (req, res) => {
     context.d_clients_application.findMany({
         where: {
             d_clients_application_products: {
-                some: {
+                every: {
                     product_name: {
                         contains: '',
                     },
@@ -67,8 +67,12 @@ exports.findClientsApplicationAll = (req, res) => {
                 }
             },
             d_clients_application_routes_stage: {
+                orderBy: {
+                    stage_date: 'desc'
+                },
                 select: {
-                    s_routes_stage_id: true
+                    s_routes_stage_id: true,
+                    stage_date: true
                 }
             },
             d_clients_application_products: {
@@ -82,28 +86,30 @@ exports.findClientsApplicationAll = (req, res) => {
             },
         }
     }).then(data => {
-        res.status(200).send(data.map(item => {
-            return {
-                id: item.id,
-                number: item.application_number,
-                date: item.application_date.toDateString(),
-                time: item.application_time.toTimeString(),
-                client: {
-                    name: item.d_clients.client_name,
-                    address: item.d_clients.address,
-                    email: item.d_clients.email,
-                    phone: item.d_clients.phone_number1,
-                },
-                total: item.d_clients_application_products.reduce(function (sum, el) {
-                    return sum + el.total;
-                }, 0),
-                paid: item.d_clients_application_products.reduce(function (sum1, el1) {
-                    return sum1 + el1.d_clients_application_pay_detail.reduce(function (sum2, el2) {
-                        return sum2 + el2.sum_pay;
-                    }, 0);
-                }, 0),
-            };
-        }));
+        res.status(200).send(data.filter((obj) => { return obj.d_clients_application_routes_stage[0].s_routes_stage_id === parseInt(stageId); })
+            .map(item => {
+                return {
+                    id: item.id,
+                    number: item.application_number,
+                    date: moment(item.application_date).format('DD.MM.YYYY'),
+                    time: moment(item.application_time).format('hh:mm:ss'),
+                    client: {
+                        id: item.d_clients_id,
+                        name: item.d_clients.client_name,
+                        address: item.d_clients.address,
+                        email: item.d_clients.email,
+                        phone: item.d_clients.phone_number1,
+                    },
+                    total: item.d_clients_application_products.reduce(function (sum, el) {
+                        return sum + el.total;
+                    }, 0),
+                    paid: item.d_clients_application_products.reduce(function (sum1, el1) {
+                        return sum1 + el1.d_clients_application_pay_detail.reduce(function (sum2, el2) {
+                            return sum2 + el2.sum_pay;
+                        }, 0);
+                    }, 0),
+                };
+            }));
     }).catch(err => {
         res.status(500).send({
             message:
@@ -143,6 +149,22 @@ exports.createClientsApplication = (req, res) => {
                         }
                     }
                 })
+            },
+            d_clients_application_routes_stage: {
+                create: {
+                    d_user: {
+                        connect: {
+                            id: '00000000-0000-0000-0000-000000000000'
+                        }
+                    },
+                    s_routes_stage: {
+                        connect: {
+                            id: 1
+                        }
+                    },
+                    count_day_execution: 0,
+                    user_name: ''
+                }
             }
         }
     }).then(data => {
