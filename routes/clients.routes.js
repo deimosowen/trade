@@ -29,11 +29,17 @@ module.exports = app => {
         },
     }), controller.createClientsApplication);
 
+    router.get("/applications/payments", [
+        query('application_id')
+            .notEmpty().withMessage('application_id is required')
+            .isUUID()
+    ], controller.findClientsApplicationPaymentById);
+
     router.post("/applications/payments", [
         body('application_id')
             .notEmpty().withMessage('application_id is required')
             .isUUID(),
-    ], controller.createClientsApplicationPay);
+    ], controller.createClientsApplicationPayment);
 
     router.get("/applications/products", [
         query('application_id')

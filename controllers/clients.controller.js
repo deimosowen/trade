@@ -180,7 +180,7 @@ exports.createClientsApplication = (req, res) => {
     });
 };
 
-exports.findClientsApplicationPayById = (req, res) => {
+exports.findClientsApplicationPaymentById = (req, res) => {
     const applicationId = req.query.application_id,
         errors = validationResult(req);
     if (!errors.isEmpty())
@@ -189,6 +189,12 @@ exports.findClientsApplicationPayById = (req, res) => {
     context.d_clients_application_pay.findMany({
         where: {
             d_clients_application_id: applicationId
+        },
+        include: {
+            d_user: true
+        },
+        orderBy: {
+            pay_date: "asc"
         }
     }).then(data => {
         res.status(200).send(data.map(item => {
@@ -197,6 +203,10 @@ exports.findClientsApplicationPayById = (req, res) => {
                 number: item.pay_number,
                 date: moment(item.pay_date).format('DD.MM.YYYY'),
                 sum_pay: item.sum_pay,
+                user: {
+                    id: item.d_user_id,
+                    name: item.user_name
+                }
             };
         }));
     }).catch(err => {
@@ -207,7 +217,7 @@ exports.findClientsApplicationPayById = (req, res) => {
     });
 };
 
-exports.createClientsApplicationPay = (req, res) => {
+exports.createClientsApplicationPayment = (req, res) => {
     const applicationId = req.body.application_id,
         userId = req.body.user_id,
         sumPay = req.body.sum_pay,

@@ -1,7 +1,7 @@
 ﻿swagger: '2.0'
 info:
   description: ''
-  version: '1.1.11'
+  version: '1.2.0'
   title: Swagger Trade
 tags:
   - name: auth
@@ -262,6 +262,160 @@ paths:
               number:
                 type: int
                 example: 40
+        '422':
+          description: Ошибка параметров
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                value:
+                  type: string
+                  example: ''
+                msg:
+                  type: string
+                  example: application_id is required
+                param:
+                  type: string
+                  example: application_id
+                location:
+                  type: string
+                  example: query
+  /api/clients/applications/payments:
+    get:
+      tags:
+        - clients
+      summary: Получение списка оплат по заявке
+      description: Заявки
+      operationId: clients_application_payment
+      produces:
+        - application/json
+      parameters:
+        - name: application_id
+          in: query
+          description: ID заявки
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Успешная операция
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  example: 73a0b90a-5896-4ecb-b3f8-f85a8b6d6553
+                number:
+                  type: string
+                  example: 16.07.2020
+                date:
+                  type: string
+                  format: date
+                  example: 16.07.2020
+                sum_pay:
+                  type: number
+                  format: float
+                  example: 100.54
+                user:
+                  type: object
+                  properties:
+                    id:
+                      description: Id сотрудника
+                      type: string
+                      format: uuid
+                      example: '282efde1-e891-4413-9b2a-29829a7c7159'
+                    name:
+                      description: Наименование сотрудника
+                      type: string
+                      example: Jetta Juan Webb
+        '422':
+          description: Ошибка параметров
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                value:
+                  type: string
+                  example: ''
+                msg:
+                  type: string
+                  example: application_id is required
+                param:
+                  type: string
+                  example: application_id
+                location:
+                  type: string
+                  example: query
+    post:
+      tags:
+        - clients
+      summary: Добавление новой оплаты по заявке
+      description: Заявки
+      operationId: clients_application_payment_create
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: application_id
+          in: formData
+          description: ID заявки
+          required: true
+          type: string
+          format: uuid
+        - name: user_id
+          in: formData
+          description: ID пользователя
+          required: true
+          type: string
+          format: uuid
+        - name: sum_pay
+          in: formData
+          description: Сумма оплаты
+          required: true
+          type: number
+          format: float
+          example: 100.54
+      responses:
+        '200':
+          description: Успешная операция
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  example: 73a0b90a-5896-4ecb-b3f8-f85a8b6d6553
+                number:
+                  type: string
+                  example: 16.07.2020
+                date:
+                  type: string
+                  format: date
+                  example: 16.07.2020
+                sum_pay:
+                  type: number
+                  format: float
+                  example: 100.54
+                user:
+                  type: object
+                  properties:
+                    id:
+                      description: Id сотрудника
+                      type: string
+                      format: uuid
+                      example: '282efde1-e891-4413-9b2a-29829a7c7159'
+                    name:
+                      description: Наименование сотрудника
+                      type: string
+                      example: Jetta Juan Webb
         '422':
           description: Ошибка параметров
           schema:
