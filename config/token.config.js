@@ -1,6 +1,6 @@
 module.exports = {
     secretKey: "!QwerFbbgfg54$%^456trhyrth$%#^T$%tryrty$%#^#$%retret#$%#$%trgfdbgfhgjyhhg",
-    options:{
+    options: {
         expiresIn: 3600
     }
 };

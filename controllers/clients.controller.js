@@ -27,6 +27,7 @@ exports.findClientsAll = (req, res) => {
 
 exports.findClientsApplicationAll = (req, res) => {
     const companyId = req.query.company_id,
+        clientId = req.query.client_id,
         stageId = req.query.stage_id,
         errors = validationResult(req);
     if (!errors.isEmpty())
@@ -42,13 +43,18 @@ exports.findClientsApplicationAll = (req, res) => {
                 }
             },
             d_clients: {
-                d_companies_clients: {
-                    some: {
-                        d_companies_id: {
-                            equals: companyId
+                OR: [{
+                    d_companies_clients: {
+                        some: {
+                            d_companies_id: {
+                                equals: companyId
+                            }
                         }
                     }
-                }
+                },
+                {
+                    id: clientId
+                }]
             },
             d_clients_application_routes_stage: {
                 some: {

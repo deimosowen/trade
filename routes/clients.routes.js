@@ -6,9 +6,9 @@ module.exports = app => {
     router.get("/", controller.findClientsAll);
 
     router.get("/applications", [
-        query('company_id')
-            .notEmpty().withMessage('company_id is required')
-            .isUUID(),
+        /*  query('company_id')
+             .notEmpty().withMessage('company_id is required')
+             .isUUID(), */
         query('stage_id')
             .notEmpty().withMessage('stage_id is required')
             .isInt()
