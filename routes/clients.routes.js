@@ -42,9 +42,8 @@ module.exports = app => {
         body('user_id')
             .notEmpty().withMessage('user_id is required')
             .isUUID(),
-        body('sum_pay ')
+        body('sum_pay')
             .notEmpty().withMessage('sum_pay is required')
-            .isFloat(),
     ], controller.createClientsApplicationPayment);
 
     router.get("/applications/products", [

@@ -1,21 +1,8 @@
-POST http://localhost:3000/api/clients/applications
+POST http://localhost:3000/api/clients/applications/payments 
 Content-Type: application/json
 
 {
-    "client_id": "fd83450d-df2f-4ecc-bd1d-8006f4cdf5e2",
-    "products":[
-        {
-            "id": "4dfe777f-1fc6-4259-8fbe-e0f6e132bce6",
-            "count": 10
-
-        },
-          {
-            "id": "f7341ec9-30c1-4562-ae98-681dbdebae33",
-            "count": 20
-        },
-          {
-            "id": "cb3369f0-0cf6-4444-bcae-422ce3fb8ee3",
-            "count": 20
-        }
-    ]
+    "application_id": "f9fd8236-c458-4a16-9194-ffe587bfe88d",
+    "user_id": "680875b2-eb9f-4d4e-a58a-8a5d750f4f19",
+    "sum_pay": 111.00
 }
