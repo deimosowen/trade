@@ -1,4 +1,4 @@
-﻿swagger: '2.0'
+swagger: '2.0'
 info:
   description: ''
   version: '1.3.1'
@@ -253,7 +253,7 @@ paths:
                       format: uuid
                       example: 73a0b90a-5896-4ecb-b3f8-f85a8b6d6553
                     count:
-                      type: int
+                      type: integer
                       example: 20
       responses:
         '200':
@@ -266,7 +266,7 @@ paths:
                 format: uuid
                 example: e1e9b46b-4f9b-4112-970c-04ae09d54d1a
               number:
-                type: int
+                type: integer
                 example: 40
         '422':
           description: Ошибка параметров
@@ -386,7 +386,6 @@ paths:
           required: true
           type: number
           format: float
-          example: 100.54
       responses:
         '200':
           description: Успешная операция
@@ -716,6 +715,69 @@ paths:
                   description: Сайт компании
                   type: string
                   example: www.test.com
+  /api/companies/clients:
+    get:
+      tags:
+        - companies
+      summary: Получение списка клиентов компании
+      description: Клиенты компании
+      operationId: clients_companies
+      produces:
+        - application/json
+      parameters:
+        - name: company_id
+          in: query
+          description: ID компании
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Успешная операция
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  example: 73a0b90a-5896-4ecb-b3f8-f85a8b6d6553
+                name:
+                  description: Наименование
+                  type: string
+                  example: Name
+                address:
+                  description: Адрес
+                  type: string
+                  example: address
+                email:
+                  description: Электронная почта
+                  type: string
+                  example: test@test.ru
+                phone:
+                  description: Номер телефона
+                  type: string
+                  example: +79881231213
+        '422':
+          description: Ошибка параметров
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                value:
+                  type: string
+                  example: ''
+                msg:
+                  type: string
+                  example: company_id is required
+                param:
+                  type: string
+                  example: company_id
+                location:
+                  type: string
+                  example: query
   /api/companies/products:
     get:
       tags:
