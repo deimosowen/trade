@@ -1,7 +1,7 @@
 ﻿swagger: '2.0'
 info:
   description: ''
-  version: '1.2.1'
+  version: '1.2.3'
   title: Swagger Trade
 tags:
   - name: auth
