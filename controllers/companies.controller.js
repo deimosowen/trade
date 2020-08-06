@@ -21,16 +21,46 @@ exports.findCompaniesAll = (req, res) => {
     });
 };
 
+exports.findCompaniesClientsById = (req, res) => {
+    const companyId = req.query.company_id,
+        errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() });
+
+    context.d_companies_clients.findMany({
+        where: {
+            d_companies_id: companyId,
+        },
+        include: {
+            d_clients: true
+        }
+    }).then(data => {
+        return res.status(200).send(data.map(item => {
+            return {
+                id: item.d_clients.id,
+                name: item.d_clients.client_name,
+                address: item.d_clients.address,
+                email: item.d_clients.email,
+                phone: item.d_clients.phone_number1,
+            };
+        }));
+    }).catch(err => {
+        return res.status(500).send({
+            message:
+                err.message || "Error"
+        });
+    });
+};
+
 exports.findCompaniesProductsTypesById = (req, res) => {
     const companyId = req.query.company_id,
         errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() });
 
     context.d_companies_products_types.findMany({
-        where:{
+        where: {
             d_companies_id: companyId,
         },
-        select:{
+        select: {
             id: true,
             type_name: true,
         }
@@ -47,7 +77,7 @@ exports.findCompaniesProductsTypesById = (req, res) => {
                 err.message || "Error"
         });
     });
-}; 
+};
 
 exports.findCompaniesProductsById = (req, res) => {
     const companyId = req.query.company_id,
@@ -57,17 +87,17 @@ exports.findCompaniesProductsById = (req, res) => {
     if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() });
 
     context.d_companies_products.findMany({
-        where:{
+        where: {
             d_companies_id: companyId,
             d_companies_products_types_id: typeId,
-            d_companies_products_price:{
-                some:{
-                    date_start:{
+            d_companies_products_price: {
+                some: {
+                    date_start: {
                         lte: new Date()
                     },
-                    OR:[{
+                    OR: [{
                         date_stop: null
-                    },{
+                    }, {
                         date_stop: {
                             gte: new Date()
                         }
@@ -76,21 +106,21 @@ exports.findCompaniesProductsById = (req, res) => {
                 }
             }
         },
-        select:{
+        select: {
             id: true,
             code: true,
             d_products: {
                 select: {
                     product_name: true,
-                    s_unit_measure:{
-                        select:{
+                    s_unit_measure: {
+                        select: {
                             unit_name: true
                         }
                     }
                 }
             },
             d_companies_products_price: {
-                select:{
+                select: {
                     price: true,
                     date_start: true,
                     date_stop: true

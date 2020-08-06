@@ -6,6 +6,14 @@ module.exports = app => {
     //router.get("/", passport.authenticate('bearer', { session: false }), controller.findCompaniesAll);
     router.get("/", controller.findCompaniesAll);
 
+    router.get("/clients", checkSchema({
+        company_id: {
+            in: ['params', 'query'],
+            errorMessage: 'company_id is wrong',
+            isUUID: true,
+        }
+    }), controller.findCompaniesClientsById);
+
     router.get("/products/types", checkSchema({
         company_id: {
             in: ['params', 'query'],
