@@ -14,11 +14,14 @@ model d_clients {
   email                 String
   phone_number1         String
   phone_number2         String?
+  password              String
+  s_accounts_id         String?
+  s_accounts            s_accounts?             @relation(fields: [s_accounts_id], references: [id])
   d_clients_application d_clients_application[]
   d_companies_clients   d_companies_clients[]
-  d_user                d_user[]
 
   @@index([id], name: "d_clients_idx1")
+  @@index([s_accounts_id], name: "d_clients_s_accounts_id_idx")
 }
 
 model d_clients_application {
@@ -243,8 +246,6 @@ model d_products {
 
 model d_user {
   id                                 String                               @default(dbgenerated()) @id
-  d_representatives_id               String?
-  d_clients_id                       String
   s_role_id                          Int
   user_name                          String
   job_pos_name                       String
@@ -252,15 +253,28 @@ model d_user {
   phone_number2                      String?
   email                              String                               @unique
   password                           String
-  d_clients                          d_clients                            @relation(fields: [d_clients_id], references: [id])
+  s_accounts_id                      String?
+  s_accounts                         s_accounts?                          @relation(fields: [s_accounts_id], references: [id])
   s_role                             s_role                               @relation(fields: [s_role_id], references: [id])
   d_clients_application_pay          d_clients_application_pay[]
   d_clients_application_routes_stage d_clients_application_routes_stage[]
 
   @@index([id], name: "d_user_idx1")
   @@index([s_role_id], name: "d_user_idx2")
-  @@index([d_representatives_id], name: "d_user_idx3")
-  @@index([d_clients_id], name: "d_user_idx4")
+  @@index([s_accounts_id], name: "d_user_s_accounts_id_idx")
+}
+
+model s_accounts {
+  id        String      @default(dbgenerated()) @id
+  login     String      @unique
+  password  String
+  s_role_id Int
+  s_role    s_role      @relation(fields: [s_role_id], references: [id])
+  d_clients d_clients[]
+  d_user    d_user[]
+
+  @@index([id], name: "s_accounts_id_idx")
+  @@index([s_role_id], name: "s_accounts_s_role_id_idx")
 }
 
 model s_address_countries {
@@ -306,9 +320,10 @@ model s_pay_term {
 }
 
 model s_role {
-  id        Int      @id
-  role_name String
-  d_user    d_user[]
+  id         Int          @id
+  role_name  String
+  d_user     d_user[]
+  s_accounts s_accounts[]
 }
 
 model s_routes_stage {

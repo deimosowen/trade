@@ -10,27 +10,37 @@ exports.getToken = async (req, res) => {
     if (!errors.isEmpty())
         return res.status(422).json({ errors: errors.array() });
 
-    var user = await context.d_user.findOne({
-        where: { email: email },
+    var account = await context.s_accounts.findOne({
+        where: { login: email },
         include: {
+            d_user: true,
+            d_clients: true,
             s_role: true
         }
     });
 
-    if (!user)
+    if (!account)
         return res.status(400).send('incorrect email or password');
 
-    if (!await bcrypt.compare(password, user.password))
+    if (!await bcrypt.compare(password, account.password))
         return res.status(400).send('incorrect email or password');
 
     return res.status(200).json({
         token: tokenMiddleware.sign({
-            user: {
-                id: user.id,
-                client_id: user.d_clients_id,
-                name: user.user_name,
-                role: user.s_role.role_name
-            }
+            client: account.d_clients.map((client) => {
+                return {
+                    id: client.id,
+                    name: client.client_name,
+                }
+            })[0],
+            user: account.d_user.map((user) => {
+                return {
+                    id: user.id,
+                    name: user.user_name,
+                    job: user.job_pos_name,
+                }
+            })[0],
+            role: account.s_role.role_name
         })
     });
 };

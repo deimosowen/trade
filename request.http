@@ -1,8 +1,2 @@
-POST http://localhost:3000/api/clients/applications/payments 
+GET http://localhost:3000/api/companies/clients?company_id=d647e831-5d42-49f1-aebc-d4a9c2b83bde
 Content-Type: application/json
-
-{
-    "application_id": "f9fd8236-c458-4a16-9194-ffe587bfe88d",
-    "user_id": "680875b2-eb9f-4d4e-a58a-8a5d750f4f19",
-    "sum_pay": 111.00
-}
