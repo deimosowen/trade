@@ -27,6 +27,7 @@ exports.getToken = async (req, res) => {
         token: tokenMiddleware.sign({
             user: {
                 id: user.id,
+                client_id: user.d_clients_id,
                 name: user.user_name,
                 role: user.s_role.role_name
             }

@@ -1,5 +1,5 @@
 module.exports = app => {
-    const controller = require("../controllers/clients.controller.js");
+    const controller = require("../controllers/applications.controller.js");
     const { query, body, checkSchema } = require('express-validator');
     var router = require("express").Router();
 
@@ -39,12 +39,6 @@ module.exports = app => {
         body('application_id')
             .notEmpty().withMessage('application_id is required')
             .isUUID(),
-        body('user_id')
-            .notEmpty().withMessage('user_id is required')
-            .isUUID(),
-        body('sum_pay ')
-            .notEmpty().withMessage('sum_pay is required')
-            .isFloat(),
     ], controller.createClientsApplicationPayment);
 
     router.get("/applications/products", [
