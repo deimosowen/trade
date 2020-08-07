@@ -32,6 +32,9 @@ exports.findClientsCompanyAll = (req, res) => {
         return res.status(422).json({ errors: errors.array() });
 
     context.d_companies_clients.findMany({
+        include: {
+            d_companies: true
+        },
         where: {
             d_clients_id: clientId,
         }
@@ -39,11 +42,11 @@ exports.findClientsCompanyAll = (req, res) => {
         res.status(200).send(data.map(item => {
             return {
                 id: item.id,
-                name: item.companies_name,
-                address: item.address,
-                email: item.email,
-                phone: item.phone_number1,
-                website: item.website
+                name: item.d_companies.companies_name,
+                address: item.d_companies.address,
+                email: item.d_companies.email,
+                phone: item.d_companies.phone_number1,
+                website: item.d_companies.website
             };
         }));
     }).catch(err => {
@@ -317,10 +320,7 @@ exports.findClientsApplicationProductsById = (req, res) => {
                 date: moment(item.d_clients_application.application_date).format('DD.MM.YYYY'),
                 time: moment(item.d_clients_application.application_date).format('hh:mm:ss'),
                 count: item.count_product,
-                price: item.price,
-                paid: item.d_clients_application_pay_detail.reduce(function (sum, el) {
-                    return sum + el.sum_pay;
-                }, 0)
+                price: item.price
             };
         }));
     }).catch(err => {
