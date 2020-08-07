@@ -14,7 +14,7 @@ module.exports = app => {
             .isInt()
     ], controller.findClientsApplicationAll);
 
-    router.get("/applications/companies", [
+    router.get("/companies", [
         query('client_id')
             .notEmpty().withMessage('client_id is required')
             .isUUID()
