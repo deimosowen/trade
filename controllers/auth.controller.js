@@ -38,7 +38,8 @@ exports.getToken = async (req, res) => {
                     id: user.id,
                     name: user.user_name,
                     job: user.job_pos_name,
-                    company_id: user.d_companies_id
+                    company_id: user.d_companies_id,
+                    test: "test"
                 }
             })[0],
             role: account.s_role.role_name
