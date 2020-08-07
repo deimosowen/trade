@@ -8,5 +8,11 @@ module.exports = app => {
         body('password')
             .notEmpty().withMessage('password is required')
     ], controller.getToken);
+
+    router.post("/refresh", [
+        body('token')
+            .notEmpty().withMessage('email is required')
+    ], controller.refreshToken);
+
     app.use('/api/auth', router);
 };

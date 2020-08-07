@@ -1,2 +1,6 @@
-GET http://localhost:3000/api/companies/clients?company_id=d647e831-5d42-49f1-aebc-d4a9c2b83bde
+POST http://localhost:3000/api/auth/refresh
 Content-Type: application/json
+
+{
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjgwODc1YjItZWI5Zi00ZDRlLWE1OGEtOGE1ZDc1MGY0ZjE5IiwibmFtZSI6Ik1pa2UgRWxmcmVkYSBIZXJyZXJhIiwiam9iIjoiT3BlcmF0b3IifSwicm9sZSI6ItCQ0LTQvNC40L3QuNGB0YLRgNCw0YLQvtGAIiwiaWF0IjoxNTk2NzgzNTk1LCJleHAiOjE1OTY3ODcxOTV9.BFK2YCxV5NsDx2L3NZYMIksYpZhAam-yeaspftr8Yf4"
+}

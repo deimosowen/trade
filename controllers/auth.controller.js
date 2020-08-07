@@ -44,3 +44,14 @@ exports.getToken = async (req, res) => {
         })
     });
 };
+
+exports.refreshToken = async (req, res) => {
+    const token = req.body.token,
+        errors = validationResult(req);
+    if (!errors.isEmpty())
+        return res.status(422).json({ errors: errors.array() });
+
+    var result = tokenMiddleware.refresh(token);
+
+    return res.status(200).json(result);
+};

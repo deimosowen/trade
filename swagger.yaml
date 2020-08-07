@@ -69,6 +69,51 @@ paths:
                 location:
                   type: string
                   example: query
+  /api/auth/refresh:
+    post:
+      tags:
+        - auth
+      summary: Обновление токена доступа
+      description: Обновление токена
+      operationId: token_refresh
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: formData
+          description: токен доступа
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Успешная операция
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+                example: token
+        '422':
+          description: Ошибка параметров
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                value:
+                  type: string
+                  example: ''
+                msg:
+                  type: string
+                  example: token is required
+                param:
+                  type: string
+                  example: token
+                location:
+                  type: string
+                  example: query
   /api/clients:
     get:
       tags:
