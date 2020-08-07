@@ -106,21 +106,19 @@ exports.findClientsApplicationAll = (req, res) => {
                 }
             },
             d_clients_application_routes_stage: {
-                orderBy: {
-                    stage_date: 'desc'
-                },
                 select: {
                     s_routes_stage_id: true,
                     stage_date: true
                 }
             },
+            d_clients_application_pay: {
+                select: {
+                    sum_pay: true
+                }
+            },
             d_clients_application_products: {
-                include: {
-                    d_clients_application_pay_detail: {
-                        select: {
-                            sum_pay: true
-                        }
-                    }
+                select: {
+                    total: true
                 }
             },
         }
@@ -142,10 +140,8 @@ exports.findClientsApplicationAll = (req, res) => {
                     total: item.d_clients_application_products.reduce(function (sum, el) {
                         return sum + el.total;
                     }, 0),
-                    paid: item.d_clients_application_products.reduce(function (sum1, el1) {
-                        return sum1 + el1.d_clients_application_pay_detail.reduce(function (sum2, el2) {
-                            return sum2 + el2.sum_pay;
-                        }, 0);
+                    paid: item.d_clients_application_pay.reduce(function (sum, el) {
+                        return sum + el.sum_pay;
                     }, 0),
                 };
             }));
