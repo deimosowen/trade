@@ -42,7 +42,7 @@ exports.findClientsCompanyAll = (req, res) => {
     }).then(data => {
         res.status(200).send(data.map(item => {
             return {
-                id: item.id,
+                id: item.d_companies_id,
                 name: item.d_companies.companies_name,
                 address: item.d_companies.address,
                 email: item.d_companies.email,
