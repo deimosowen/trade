@@ -1,6 +1,7 @@
 const context = require('../prisma');
 const moment = require('moment');
 const { validationResult } = require('express-validator');
+const { refresh } = require('../middleware/token.middleware');
 
 exports.findClientsAll = (req, res) => {
     const errors = validationResult(req);
@@ -313,7 +314,7 @@ exports.findClientsApplicationProductsById = (req, res) => {
             }
         }
     }).then(data => {
-        res.status(200).send(data.map(item => {
+        return res.status(200).send(data.map(item => {
             return {
                 id: item.id,
                 name: item.product_name,
@@ -324,7 +325,7 @@ exports.findClientsApplicationProductsById = (req, res) => {
             };
         }));
     }).catch(err => {
-        res.status(500).send({
+        return res.status(500).send({
             message:
                 err.message || "Error"
         });
