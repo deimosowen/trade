@@ -14,6 +14,12 @@ module.exports = app => {
             .isInt()
     ], controller.findClientsApplicationAll);
 
+    router.get("/applications/companies", [
+        query('client_id')
+            .notEmpty().withMessage('client_id is required')
+            .isUUID()
+    ], controller.findClientsCompanyAll);
+
     router.post("/applications", checkSchema({
         client_id: {
             in: ['body'],
