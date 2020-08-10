@@ -12,7 +12,7 @@ const tokenMiddleware = require("./middleware/token.middleware");
 const app = express();
 
 app.use(morgan("dev"));
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "*" }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
