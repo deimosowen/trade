@@ -3,10 +3,10 @@ module.exports = app => {
     const { checkSchema } = require('express-validator');
     const passport = require('passport');
     var router = require("express").Router();
-    //router.get("/", passport.authenticate('bearer', { session: false }), controller.findCompaniesAll);
-    router.get("/", controller.findCompaniesAll);
 
-    router.get("/clients", checkSchema({
+    router.get("/", passport.authenticate('bearer', { session: false }), controller.findCompaniesAll);
+
+    router.get("/clients", passport.authenticate('bearer', { session: false }), checkSchema({
         company_id: {
             in: ['params', 'query'],
             errorMessage: 'company_id is wrong',
@@ -14,7 +14,7 @@ module.exports = app => {
         }
     }), controller.findCompaniesClientsById);
 
-    router.get("/products/types", checkSchema({
+    router.get("/products/types", passport.authenticate('bearer', { session: false }), checkSchema({
         company_id: {
             in: ['params', 'query'],
             errorMessage: 'company_id is wrong',
@@ -22,7 +22,7 @@ module.exports = app => {
         }
     }), controller.findCompaniesProductsTypesById);
 
-    router.get("/products", checkSchema({
+    router.get("/products", passport.authenticate('bearer', { session: false }), checkSchema({
         company_id: {
             in: ['params', 'query'],
             errorMessage: 'company_id is wrong',

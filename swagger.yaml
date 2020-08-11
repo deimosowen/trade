@@ -14,6 +14,11 @@ tags:
     description: Справочники
 schemes:
   - http
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
 paths:
   /api/auth/token:
     post:
@@ -118,6 +123,8 @@ paths:
     get:
       tags:
         - clients
+      security:
+        - Bearer: []
       summary: Получение списка клиента
       description: Клиенты
       operationId: clients
@@ -174,6 +181,8 @@ paths:
     get:
       tags:
         - clients
+      security:
+        - Bearer: []
       summary: Получение списка компаний клиента
       description: Компании клиента
       operationId: clients_companies
@@ -241,6 +250,8 @@ paths:
     get:
       tags:
         - clients
+      security:
+        - Bearer: []
       summary: Получение списка заявок
       description: Заявки
       operationId: clients_application
@@ -335,6 +346,8 @@ paths:
     post:
       tags:
         - clients
+      security:
+        - Bearer: []
       summary: Добавление новой заявки
       description: Заявки
       operationId: clients_application_create
@@ -403,6 +416,8 @@ paths:
     get:
       tags:
         - clients
+      security:
+        - Bearer: []
       summary: Получение списка оплат по заявке
       description: Заявки
       operationId: clients_application_payment
@@ -472,6 +487,8 @@ paths:
     post:
       tags:
         - clients
+      security:
+        - Bearer: []
       summary: Добавление новой оплаты по заявке
       description: Заявки
       operationId: clients_application_payment_create
@@ -556,6 +573,8 @@ paths:
     get:
       tags:
         - clients
+      security:
+        - Bearer: []
       summary: Получение списка товаров по заявке
       description: Заявки
       operationId: clients_application_products
@@ -621,6 +640,8 @@ paths:
     get:
       tags:
         - clients
+      security:
+        - Bearer: []
       summary: Получение списка этапов по заявке
       description: Заявки
       operationId: clients_application_stages
@@ -696,6 +717,8 @@ paths:
     post:
       tags:
         - clients
+      security:
+        - Bearer: []
       summary: Добавление нового этапа по заявке
       description: Заявки
       operationId: clients_application_stages_create
@@ -786,6 +809,8 @@ paths:
     get:
       tags:
         - companies
+      security:
+        - Bearer: []
       summary: Получение списка компаний
       description: Компании
       operationId: companies
@@ -827,6 +852,8 @@ paths:
     get:
       tags:
         - companies
+      security:
+        - Bearer: []
       summary: Получение списка клиентов компании
       description: Клиенты компании
       operationId: companies_clients
@@ -890,6 +917,8 @@ paths:
     get:
       tags:
         - companies
+      security:
+        - Bearer: []
       summary: Получение списка продукции компании
       description: Продукции компании
       operationId: products_companies
@@ -966,6 +995,8 @@ paths:
     get:
       tags:
         - companies
+      security:
+        - Bearer: []
       summary: Получение списка видов продукции
       description: Заявки
       operationId: products_companies_types
@@ -1017,6 +1048,8 @@ paths:
     get:
       tags:
         - reference
+      security:
+        - Bearer: []
       summary: Получение списка этапов
       description: Этапы
       operationId: routes_stage

@@ -1,11 +1,12 @@
 module.exports = app => {
     const controller = require("../controllers/clients.controller.js");
     const { query, body, checkSchema } = require('express-validator');
+    const passport = require('passport');
     var router = require("express").Router();
 
-    router.get("/", controller.findClientsAll);
+    router.get("/", passport.authenticate('bearer', { session: false }), controller.findClientsAll);
 
-    router.get("/applications", [
+    router.get("/applications", passport.authenticate('bearer', { session: false }), [
         /*  query('company_id')
              .notEmpty().withMessage('company_id is required')
              .isUUID(), */
@@ -14,13 +15,13 @@ module.exports = app => {
             .isInt()
     ], controller.findClientsApplicationAll);
 
-    router.get("/companies", [
+    router.get("/companies", passport.authenticate('bearer', { session: false }), [
         query('client_id')
             .notEmpty().withMessage('client_id is required')
             .isUUID()
     ], controller.findClientsCompanyAll);
 
-    router.post("/applications", checkSchema({
+    router.post("/applications", passport.authenticate('bearer', { session: false }), checkSchema({
         client_id: {
             in: ['body'],
             errorMessage: 'client_id is wrong',
@@ -35,13 +36,13 @@ module.exports = app => {
         },
     }), controller.createClientsApplication);
 
-    router.get("/applications/payments", [
+    router.get("/applications/payments", passport.authenticate('bearer', { session: false }), [
         query('application_id')
             .notEmpty().withMessage('application_id is required')
             .isUUID()
     ], controller.findClientsApplicationPaymentById);
 
-    router.post("/applications/payments", [
+    router.post("/applications/payments", passport.authenticate('bearer', { session: false }), [
         body('application_id')
             .notEmpty().withMessage('application_id is required')
             .isUUID(),
@@ -52,19 +53,19 @@ module.exports = app => {
             .notEmpty().withMessage('sum_pay is required')
     ], controller.createClientsApplicationPayment);
 
-    router.get("/applications/products", [
+    router.get("/applications/products", passport.authenticate('bearer', { session: false }), [
         query('application_id')
             .notEmpty().withMessage('application_id is required')
             .isUUID()
     ], controller.findClientsApplicationProductsById);
 
-    router.get("/applications/stages", [
+    router.get("/applications/stages", passport.authenticate('bearer', { session: false }), [
         query('application_id')
             .notEmpty().withMessage('application_id is required')
             .isUUID()
     ], controller.findClientsApplicationStagesById);
 
-    router.post("/applications/stages", [
+    router.post("/applications/stages", passport.authenticate('bearer', { session: false }), [
         body('application_id')
             .notEmpty().withMessage('application_id is required')
             .isUUID(),
