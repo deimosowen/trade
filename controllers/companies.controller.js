@@ -63,12 +63,18 @@ exports.findCompaniesProductsTypesById = (req, res) => {
         select: {
             id: true,
             type_name: true,
+            d_companies_products: {
+                select: {
+                    id: true
+                }
+            }
         }
     }).then(data => {
         return res.status(200).send(data.map(item => {
             return {
                 id: item.id,
-                name: item.type_name
+                name: item.type_name,
+                count: item.d_companies_products.length
             };
         }));
     }).catch(err => {
