@@ -106,6 +106,9 @@ exports.findClientsApplicationAll = (req, res) => {
                 }
             },
             d_clients_application_routes_stage: {
+                orderBy: {
+                    stage_date: "desc"
+                },
                 select: {
                     s_routes_stage_id: true,
                     stage_date: true

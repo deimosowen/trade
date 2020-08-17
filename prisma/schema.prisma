@@ -28,7 +28,7 @@ model d_clients_application {
   id                                 String                               @default(dbgenerated()) @id
   d_clients_id                       String
   application_number                 String                               @default(dbgenerated())
-  application_date                   DateTime
+  application_date                   DateTime                             @default(now())
   application_time                   DateTime
   date_execution                     DateTime
   date_fact_execution                DateTime?
