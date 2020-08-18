@@ -27,6 +27,7 @@ TokenMiddleware.prototype.refresh = function (token, refreshOptions) {
     delete payload.iat;
     delete payload.exp;
     delete payload.nbf;
+    delete payload.sub;
     delete payload.jti; //We are generating a new token, if you are using jwtid during signing, pass it in refreshOptions
     const jwtSignOptions = Object.assign({}, refreshOptions, this.options);
     return jwt.sign(payload, this.buffer, jwtSignOptions);
