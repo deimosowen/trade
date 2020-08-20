@@ -23,7 +23,7 @@ TokenMiddleware.prototype.verify = function (token, done) {
 }
 
 TokenMiddleware.prototype.refresh = function (token, refreshOptions) {
-    const payload = jwt.verify(token, this.buffer); // const payload = jwt.verify(token, this.secretKey, refreshOptions.verify);
+    const payload = jwt.decode(token, this.buffer); // const payload = jwt.verify(token, this.secretKey, refreshOptions.verify);
     delete payload.iat;
     delete payload.exp;
     delete payload.nbf;
